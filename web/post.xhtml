@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<head>
+  <title>TODO supply a title</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
+</head>
+
+<h:body>
+    <f:metadata>
+        <f:viewParam name="photoID" value="#{post.requestPhotoId}" />
+        <f:viewAction action="#{post.populate()}" />
+    </f:metadata>
+  <h:panelGroup layout="block" class="container">
+    <h:panelGroup layout="block" class="row">
+      <h:panelGroup layout="block" class="col-md-3">
+        <p class="lead">CoffeeGram</p>
+        <h:panelGroup layout="block" class="list-group">
+          <li class="list-group-item active">nulla export minim</li>
+          <li class="list-group-item">nulla export minim</li>
+          <li class="list-group-item">nulla export minim</li>
+        </h:panelGroup>
+      </h:panelGroup>
+      <h:panelGroup layout="block" class="col-md-9">
+        <h:panelGroup class="d-flex justify-content-center" layout="block">
+          <figure class="figure" id="show">
+              <h:graphicImage library="images" name="#{post.postPhoto.photoSrc}" class="indexImage figure-img img-fluid rounded img-responsive"
+              alt="A generic square placeholder image with rounded corners in a figure." />
+            <figcaption class="figure-caption">
+                <h4 class="float-right">#{post.postPhoto.price} AED</h4>
+                <h4><a>#{post.postPhoto.caption}</a></h4>
+                <p><em>Submitted by #{post.postPhoto.userID}</em></p>
+              <!-- <% if(currentUser && coffee.author.id.equals(currentUser._id)){ %> -->
+              <h:outputLink class="btn btn-warning" value="newsfeed.xhtml">Edit</h:outputLink>
+              <h:outputLink class="btn btn-danger" value="newsfeed.xhtml">Delete</h:outputLink>
+              <!-- <% } else { %> -->
+              
+              <!-- <% }%> -->
+            </figcaption>
+          </figure>
+        </h:panelGroup>
+        <h:panelGroup layout="block" class="well">
+          <h:panelGroup layout="block" class="text-right">
+            <h:outputLink class="btn btn-primary" value="newsfeed.xhtml">Leave a comment</h:outputLink>
+          </h:panelGroup>
+          <hr />
+          <!-- <% coffee.comments.forEach((comment)=>{ %> -->
+          <h:panelGroup layout="block" class="row">
+            <h:panelGroup layout="block" class="col-md-12">
+              <strong>username</strong>
+              <span class="float-right">10 days ago</span>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="col-md-12">
+              <p>username's comment</p>
+              <!-- <% if(currentUser && comment.author.id.equals(currentUser._id)){ %> -->
+              <h:outputLink class="btn btn-warning" value="newsfeed.xhtml">Edit</h:outputLink>
+              <h:outputLink class="btn btn-danger" value="newsfeed.xhtml">Delete</h:outputLink>
+              <!-- <% } %> -->
+            </h:panelGroup>
+          </h:panelGroup>
+          <!-- <% }); %> -->
+        </h:panelGroup>
+      </h:panelGroup>
+    </h:panelGroup>
+  </h:panelGroup>
+</h:body>
+
+</html>

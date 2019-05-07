@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoffeeGram</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
+  <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script>
+    $('.f\\:custom-file-input').on('change', function () {
+      //get the file name
+      var fileName = $(this).val();
+      //replace the "Choose a file" label
+      console.log(fileName);
+      $(this).next('.f\\:custom-file-label').addClass("selected").html(fileName);
+    })
+  </script>
+  
+</head>
+
+<h:body>
+  <h:panelGroup layout="block" class="container">
+    <h1 id="formTitle">Create New Coffee</h1>
+    <h:form enctype="multipart/form-data">
+      <h:panelGroup layout="block" class="rows">
+        <h:panelGroup layout="block" class="form-group">
+          <label>Coffee Caption</label>
+          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.caption}" a:autofocus="true" a:placeholder="Enter Coffee caption" />
+        </h:panelGroup>
+        <h:panelGroup layout="block" class="form-group">
+          <label>Coffee Price</label>
+          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.price}" a:placeholder="Enter Coffee price" />
+        </h:panelGroup>
+        <h:panelGroup layout="block" class="form-group">
+          <label>Coffee Location</label>
+          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.location}" a:placeholder="Enter Coffee location" />
+        </h:panelGroup>
+        <h:panelGroup layout="block" class="form-group">
+          <label>Image</label>
+          <h:panelGroup class="custom-file">
+              <h:inputFile class="custom-file-input" value="#{newsFeed.currentUser.newPostPhoto}" id="inputGroupImage01" />
+            <label class="custom-file-label" for="inputGroupImage01">Upload image</label>
+          </h:panelGroup>
+          <small id="urlHelp" class="form-text text-muted">Image type must be png or jpg.</small>
+        </h:panelGroup>
+        <h:panelGroup layout="block" class="form-group">
+            <h:commandButton value="Add Coffee" action="#{newsFeed.currentUser.createPost}"
+            class="btn btn-lg btn-outline-success btn-block" />
+        </h:panelGroup>
+        <h:outputLink class="badge badge-primary" value="newsfeed.xhtml">Back</h:outputLink>
+      </h:panelGroup>
+    </h:form>
+  </h:panelGroup>
+</h:body>
+
+</html>

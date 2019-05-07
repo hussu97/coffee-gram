@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+  xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+  <title>CoffeeGram</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+  </script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+
+</h:head>
+
+<h:body>
+  <f:metadata>
+    <f:viewParam name="userID" value="#{profile.requestUserId}" />
+    <f:viewAction action="#{profile.populate()}" />
+  </f:metadata>
+  <h:panelGroup layout="block" class="container">
+    <h:panelGroup layout="block" class="jumbotron">
+      <h:panelGroup layout="block" class="container">
+        <h1>Hello #{profile.user.firstName} #{profile.user.lastName}</h1>
+        <h2>#{profile.user.username}</h2>
+        <p>The only website that allows you to show affection towards your favourite cup of coffee
+        </p>
+        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="pills-photos-tab" data-toggle="pill" href="#pills-photos"
+              role="tab">Photos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-followers-tab" data-toggle="pill" href="#pills-followers"
+              role="tab">Followers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-following-tab" data-toggle="pill" href="#pills-following"
+              role="tab">Following</a>
+          </li>
+        </ul>
+      </h:panelGroup>
+    </h:panelGroup>
+    <h:panelGroup layout="block" class="tab-content" id="pills-tabContent">
+      <h:panelGroup layout="block" class="tab-pane fade show active" id="pills-photos">
+        <h:panelGroup layout="block" class="row index">
+          <c:forEach var="i" items="${profile.user.profilePhotos}">
+            <h:panelGroup layout="block" class="col-md-3 col-sm-6">
+              <figure class="figure">
+                <h:graphicImage library="images" name="#{i.photoSrc}" title="img name"
+                  class="indexImage figure-img img-fluid rounded"
+                  alt="A generic square placeholder image with rounded corners in a figure." />
+                <figcaption class="figure-caption">
+                  <h4>#{i.caption}</h4>
+                  <!--<h4><%= coffee.name %></h4>-->
+                  <p>
+                    <h:outputLink class="btn btn-outline-info btn-sm" value="#{newsFeed.setSelectedPhoto(i)}">More Info
+                    </h:outputLink>
+                    <!--<a href="/coffees/<%= coffee._id %>" class="btn btn-primary">More Info</a>-->
+                  </p>
+                </figcaption>
+              </figure>
+            </h:panelGroup>
+            <!--<%});%>-->
+          </c:forEach>
+        </h:panelGroup>
+      </h:panelGroup>
+      <h:panelGroup layout="block" class="tab-pane fade container" id="pills-followers">
+        <h:panelGroup layout="block" class="list-group">
+          <c:forEach var="i" items="${profile.followers}">
+            <h:panelGroup layout="block" class="list-group-item list-group-item-action">
+              <h:panelGroup layout="block" class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">#{i.username}</h5>
+                <small>3 days ago</small>
+              </h:panelGroup>
+              <h:panelGroup layout="block" class="d-flex w-100 justify-content-between">
+                <small>#{i.firstName} #{i.lastName}</small>
+                <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile.xhtml"
+                  includeViewParams="true">
+                  <f:param value="#{i.userID}" name="userID" />
+                </h:link>
+              </h:panelGroup>
+            </h:panelGroup>
+          </c:forEach>
+        </h:panelGroup>
+      </h:panelGroup>
+      <h:panelGroup layout="block" class="tab-pane fade container" id="pills-following">
+        <c:forEach var="i" items="${profile.following}">
+          <h:panelGroup layout="block" class="list-group-item list-group-item-action">
+            <h:panelGroup layout="block" class="d-flex w-100 justify-content-between container">
+              <h5 class="mb-1">#{i.username}</h5>
+              <small>3 days ago</small>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="d-flex w-100 justify-content-between container">
+              <small>#{i.firstName} #{i.lastName}</small>
+              <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile.xhtml"
+                includeViewParams="true">
+                <f:param value="#{i.userID}" name="userID" />
+              </h:link>
+            </h:panelGroup>
+          </h:panelGroup>
+        </c:forEach>
+      </h:panelGroup>
+    </h:panelGroup>
+  </h:panelGroup>
+</h:body>
+
+</html>
