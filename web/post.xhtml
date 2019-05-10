@@ -6,71 +6,184 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
 <head>
   <title>TODO supply a title</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+  </script>
+  <script>
+    function like() {
+      data = {
+        photoid: #{
+          post.requestPhotoId
+        },
+        userid: #{
+          currentUser.userID
+        }
+      }
+      var likeText = String($("#likeButton").text().trim());
+      if (likeText === "Like") {
+        data.action = "Unlike";
+      } else {
+        data.action = "Like";
+      }
+      $.post('like', data, (res) => {
+        $("#likeButton").text(data.action);
+      })
+    }
+
+    function addComment() {
+      if ($('#add-comment-form').is(":visible")) {
+        $('#add-comment-btn').text('Leave a Comment');
+        $('#add-comment-form').hide();
+      } else {
+        $('#add-comment-btn').text('Cancel');
+        $('#add-comment-form').show();
+      }
+    }
+    function editComment(i) {
+        var buttonElement = $('#comment-'+i+'-edit-button');
+        var commentClass = 'comment-'+i+'-text';
+        var commentElement = $('#comment-'+i+'-text');
+        if(buttonElement.text()==='Edit')
+        {
+            buttonElement.text('Save');
+            $(commentElement).replaceWith("&lt;input id="+commentClass+" class='form-control' value='"+commentElement.text()+"'>");
+        }else{
+            data = {
+                commentid : i,
+                text : commentElement.val()
+            }
+            $.post('comment', data, (res) => {
+                buttonElement.text('Edit');
+                $('#comment-'+i+'-text').replaceWith('&lt;p id='+commentClass+">"+commentElement.val()+'&lt;/p>');
+            })
+            
+        }
+    }
+  </script>
 </head>
 
 <h:body>
-    <f:metadata>
-        <f:viewParam name="photoID" value="#{post.requestPhotoId}" />
-        <f:viewAction action="#{post.populate()}" />
-    </f:metadata>
-  <h:panelGroup layout="block" class="container">
+  <f:metadata>
+    <f:viewParam name="photoID" value="#{post.requestPhotoId}" />
+    <f:viewAction action="#{post.populate()}" />
+  </f:metadata>
+  <h:panelGroup layout="block" class="container py-3">
     <h:panelGroup layout="block" class="row">
-      <h:panelGroup layout="block" class="col-md-3">
-        <p class="lead">CoffeeGram</p>
-        <h:panelGroup layout="block" class="list-group">
-          <li class="list-group-item active">nulla export minim</li>
-          <li class="list-group-item">nulla export minim</li>
-          <li class="list-group-item">nulla export minim</li>
-        </h:panelGroup>
+      <h:panelGroup class="col-md-3">
+        <div class="list-group" id="list-tab" role="tablist">
+          <p class="lead">Navigate</p>
+          <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#photo"
+            role="tab">Photo</a>
+          <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#info"
+            role="tab">More Info</a>
+          <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#comments"
+            role="tab">Comments</a>
+          <a class="list-group-item list-group-item-dark" id="list-settings-list"
+            href="javascript:history.back()">Back</a>
+        </div>
       </h:panelGroup>
-      <h:panelGroup layout="block" class="col-md-9">
-        <h:panelGroup class="d-flex justify-content-center" layout="block">
-          <figure class="figure" id="show">
-              <h:graphicImage library="images" name="#{post.postPhoto.photoSrc}" class="indexImage figure-img img-fluid rounded img-responsive"
-              alt="A generic square placeholder image with rounded corners in a figure." />
-            <figcaption class="figure-caption">
-                <h4 class="float-right">#{post.postPhoto.price} AED</h4>
-                <h4><a>#{post.postPhoto.caption}</a></h4>
-                <p><em>Submitted by #{post.postPhoto.userID}</em></p>
-              <!-- <% if(currentUser && coffee.author.id.equals(currentUser._id)){ %> -->
-              <h:outputLink class="btn btn-warning" value="newsfeed.xhtml">Edit</h:outputLink>
-              <h:outputLink class="btn btn-danger" value="newsfeed.xhtml">Delete</h:outputLink>
-              <!-- <% } else { %> -->
-              
-              <!-- <% }%> -->
-            </figcaption>
-          </figure>
-        </h:panelGroup>
-        <h:panelGroup layout="block" class="well">
-          <h:panelGroup layout="block" class="text-right">
-            <h:outputLink class="btn btn-primary" value="newsfeed.xhtml">Leave a comment</h:outputLink>
-          </h:panelGroup>
-          <hr />
-          <!-- <% coffee.comments.forEach((comment)=>{ %> -->
-          <h:panelGroup layout="block" class="row">
-            <h:panelGroup layout="block" class="col-md-12">
-              <strong>username</strong>
-              <span class="float-right">10 days ago</span>
+      <h:panelGroup layout="block" class="col-md-9 mx-auto">
+        <h:panelGroup layout="block" class="tab-content" id="nav-tabContent">
+          <div class="tab-pane fade show active photoTab py-3" id="photo" role="tabpanel"
+            aria-labelledby="list-home-list">
+            <h:panelGroup layout="block">
+              <figure class="figure" id="show">
+                <h:graphicImage library="images" name="#{post.postPhoto.photoSrc}"
+                  class="indexImage figure-img img-fluid rounded img-responsive"
+                  alt="A generic square placeholder image with rounded corners in a figure." />
+                <figcaption class="figure-caption">
+                  <h4 class="float-right">#{post.postPhoto.price} AED</h4>
+                  <h4><a>#{post.postPhoto.caption}</a></h4>
+                  <p><em>Submitted by #{post.postAuthor.firstName} #{post.postAuthor.lastName}</em></p>
+                  <c:if test="#{currentUser.userID eq post.postPhoto.userID}">
+                      <h:outputLink class="btn btn-warning float-right btn-lg px-3 ml-2" value="#{currentUser.editPost(post.postPhoto)}">Edit Photo details</h:outputLink>
+                  </c:if>
+                  <!-- <% if(currentUser && coffee.author.id.equals(currentUser._id)){ %> -->
+
+                  <!-- <% } else { %> -->
+
+                  <!-- <% }%> -->
+                </figcaption>
+              </figure>
             </h:panelGroup>
-            <h:panelGroup layout="block" class="col-md-12">
-              <p>username's comment</p>
-              <!-- <% if(currentUser && comment.author.id.equals(currentUser._id)){ %> -->
-              <h:outputLink class="btn btn-warning" value="newsfeed.xhtml">Edit</h:outputLink>
-              <h:outputLink class="btn btn-danger" value="newsfeed.xhtml">Delete</h:outputLink>
-              <!-- <% } %> -->
+              <hr/>
+            <h:panelGroup layout="block">
+              <h:panelGroup layout="block" class="row">
+                <h:panelGroup layout="block" class="text-left col-md-6">
+                  <c:if test="#{not post.isLikedByCurrentUser}">
+                    <h:outputLink id="likeButton" class="btn btn-primary" value="javascript:void(0)" onclick="like()">
+                      Like
+                    </h:outputLink>
+                  </c:if>
+                  <c:if test="#{post.isLikedByCurrentUser}">
+                    <h:outputLink id="likeButton" class="btn btn-primary" value="javascript:void(0)" onclick="like()">
+                      Unlike</h:outputLink>
+                  </c:if>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="text-right col-md-6">
+                  <h:outputLink class="btn btn-primary" id="add-comment-btn" value="javascript:void(0)"
+                    onclick="addComment()">Leave a comment</h:outputLink>
+                </h:panelGroup>
+              </h:panelGroup>
+              <h:panelGroup style="display: none" layout="block" id="add-comment-form" class="add-comment py-3">
+                <h:form>
+                  <h:panelGroup layout="block" class="form-group">
+                    <h:inputTextarea class="form-control" value="#{post.newComment}" />
+                  </h:panelGroup>
+                  <h:panelGroup layout="block" class="form-group">
+                    <h:commandButton value="Add Comment" action="#{post.addComment()}"
+                      class="btn btn-lg btn-outline-success btn-block" />
+                  </h:panelGroup>
+                </h:form>
+              </h:panelGroup>
             </h:panelGroup>
-          </h:panelGroup>
-          <!-- <% }); %> -->
+          </div>
+          <div class="tab-pane fade py-3" id="comments" role="tabpanel" aria-labelledby="list-profile-list">
+            <hr />
+            <!-- <% coffee.comments.forEach((comment)=>{ %> -->
+            <c:if test="#{empty post.comments}">
+                <h3 class="text-center py-3">No comments have been recorded for this post yet =(</h3>
+            </c:if>
+            <c:forEach items="#{post.comments}" var="i">
+              <h:panelGroup layout="block" class="row py-2">
+                <h:panelGroup layout="block" class="col-md-12">
+                  <strong>#{i.username}</strong>
+                  <span class="float-right">10 days ago</span>
+                </h:panelGroup>
+                <h:panelGroup layout="block" class="col-md-12">
+                    <h:panelGroup layout="block" class="row p-3">
+                    <p id="comment-#{i.commentID}-text">#{i.text}</p>
+                    </h:panelGroup>
+                  <!-- <% if(currentUser && comment.author.id.equals(currentUser._id)){ %> -->
+                  <h:panelGroup layout="block" class="p-3">
+                  <c:if test="#{i.userID eq currentUser.userID}">
+                      <h:outputLink id="comment-#{i.commentID}-edit-button" class="btn btn-warning float-right btn-sm px-3 ml-2" value="javascript:void(0)" onclick="editComment('#{i.commentID}')">Edit</h:outputLink>
+                  <h:form>
+                    <h:commandButton value="Delete" onclick="return confirm('Really want to do that?')" action="#{post.deleteComment(i.commentID)}"
+                      class="btn btn-danger btn-sm float-right px-3 ml-2" />
+                  </h:form>
+                      
+                  </c:if>
+                  </h:panelGroup>
+                  <!-- <% } %> -->
+                </h:panelGroup>
+              </h:panelGroup>
+            </c:forEach>
+          </div>
+          <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="list-messages-list">...</div>
         </h:panelGroup>
-      </h:panelGroup>
-    </h:panelGroup>
+  </h:panelGroup>
+  </h:panelGroup>
   </h:panelGroup>
 </h:body>
 

@@ -33,20 +33,20 @@ and open the template in the editor.
       <h:panelGroup layout="block" class="rows">
         <h:panelGroup layout="block" class="form-group">
           <label>Coffee Caption</label>
-          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.caption}" a:autofocus="true" a:placeholder="Enter Coffee caption" />
+          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.caption}" a:autofocus="true" a:placeholder="Enter Coffee caption" required="true" requiredMessage="Please enter valid caption"/>
         </h:panelGroup>
         <h:panelGroup layout="block" class="form-group">
           <label>Coffee Price</label>
-          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.price}" a:placeholder="Enter Coffee price" />
+          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.price}" a:placeholder="Enter Coffee price" required="true" requiredMessage="Please enter valid price"/>
         </h:panelGroup>
         <h:panelGroup layout="block" class="form-group">
           <label>Coffee Location</label>
-          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.location}" a:placeholder="Enter Coffee location" />
+          <h:inputText class="form-control" value="#{newsFeed.currentUser.newPost.location}" a:placeholder="Enter Coffee location" required="true" requiredMessage="Please enter valid location"/>
         </h:panelGroup>
         <h:panelGroup layout="block" class="form-group">
           <label>Image</label>
           <h:panelGroup class="custom-file">
-              <h:inputFile class="custom-file-input" value="#{newsFeed.currentUser.newPostPhoto}" id="inputGroupImage01" />
+              <h:inputFile class="custom-file-input" value="#{newsFeed.currentUser.newPostPhoto}" id="inputGroupImage01" required="true" requiredMessage="Please submit an image"/>
             <label class="custom-file-label" for="inputGroupImage01">Upload image</label>
           </h:panelGroup>
           <small id="urlHelp" class="form-text text-muted">Image type must be png or jpg.</small>

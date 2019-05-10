@@ -9,9 +9,25 @@
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>like</servlet-name>
+        <servlet-class>servlets.like</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>comment</servlet-name>
+        <servlet-class>servlets.comment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>like</servlet-name>
+        <url-pattern>/like</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>comment</servlet-name>
+        <url-pattern>/comment</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -31,13 +31,12 @@ and open the template in the editor.
     <f:viewParam name="userID" value="#{profile.requestUserId}" />
     <f:viewAction action="#{profile.populate()}" />
   </f:metadata>
-  <h:panelGroup layout="block" class="container">
+  <h:panelGroup layout="block" class="">
     <h:panelGroup layout="block" class="jumbotron">
       <h:panelGroup layout="block" class="container">
         <h1>Hello #{profile.user.firstName} #{profile.user.lastName}</h1>
         <h2>#{profile.user.username}</h2>
-        <p>The only website that allows you to show affection towards your favourite cup of coffee
-        </p>
+        <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
         <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" id="pills-photos-tab" data-toggle="pill" href="#pills-photos"
@@ -58,17 +57,19 @@ and open the template in the editor.
       <h:panelGroup layout="block" class="tab-pane fade show active" id="pills-photos">
         <h:panelGroup layout="block" class="row index">
           <c:forEach var="i" items="${profile.user.profilePhotos}">
-            <h:panelGroup layout="block" class="col-md-3 col-sm-6">
+            <h:panelGroup layout="block" class="col-md-3 col-sm-6 d-flex justify-content-center">
               <figure class="figure">
                 <h:graphicImage library="images" name="#{i.photoSrc}" title="img name"
                   class="indexImage figure-img img-fluid rounded"
                   alt="A generic square placeholder image with rounded corners in a figure." />
                 <figcaption class="figure-caption">
                   <h4>#{i.caption}</h4>
+                  <p class="post-location text-right">#{i.location}</p>
                   <!--<h4><%= coffee.name %></h4>-->
                   <p>
-                    <h:outputLink class="btn btn-outline-info btn-sm" value="#{newsFeed.setSelectedPhoto(i)}">More Info
-                    </h:outputLink>
+                      <h:link class="btn btn-outline-info btn-sm" value="More Info" outcome="post" includeViewParams="true">
+                          <f:param value="#{i.photoID}" name="photoID"/>
+                  </h:link>
                     <!--<a href="/coffees/<%= coffee._id %>" class="btn btn-primary">More Info</a>-->
                   </p>
                 </figcaption>
@@ -88,7 +89,7 @@ and open the template in the editor.
               </h:panelGroup>
               <h:panelGroup layout="block" class="d-flex w-100 justify-content-between">
                 <small>#{i.firstName} #{i.lastName}</small>
-                <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile.xhtml"
+                <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile"
                   includeViewParams="true">
                   <f:param value="#{i.userID}" name="userID" />
                 </h:link>
@@ -106,7 +107,7 @@ and open the template in the editor.
             </h:panelGroup>
             <h:panelGroup layout="block" class="d-flex w-100 justify-content-between container">
               <small>#{i.firstName} #{i.lastName}</small>
-              <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile.xhtml"
+              <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile"
                 includeViewParams="true">
                 <f:param value="#{i.userID}" name="userID" />
               </h:link>

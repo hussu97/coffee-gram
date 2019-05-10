@@ -5,12 +5,16 @@
  */
 package Beans;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 
@@ -27,9 +31,77 @@ public class Post implements Serializable {
      */
     private int requestPhotoId;
     private Photo postPhoto;
+    private User postAuthor;
     private int likes;
+    @ManagedProperty(value="#{currentUser}")
+    private CurrentUser currentUser;
+    private boolean isLikedByCurrentUser;
     private ArrayList<Comment> comments;
     private CachedRowSet crs;
+    private String newComment;
+
+    public void addComment() throws IOException{
+        try{
+            System.out.println(crs);
+            System.out.println(currentUser.getUserID());
+            System.out.println(requestPhotoId);
+            System.out.println(newComment);
+            crs.setCommand("insert into comments (userid,photoid,text) values(?,?,?)");
+            crs.setInt(1, currentUser.getUserID());
+            crs.setInt(2, requestPhotoId);
+            crs.setString(3, newComment);
+            crs.execute();
+            crs.close();
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI()+"?photoID="+requestPhotoId);
+        }catch(Exception e){
+            System.out.println("errorAdComment: "+e.getMessage());
+        }
+    }
+    public void deleteComment(int commentID){
+        try{
+            crs.setCommand("delete from comments where commentid =?");
+            crs.setInt(1, commentID);
+            crs.execute();
+            crs.close();
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI()+"?photoID="+requestPhotoId);
+        }catch(Exception e){
+            System.out.println("errorAdComment: "+e.getMessage());
+        }
+    }
+    public String getNewComment() {
+        return newComment;
+    }
+
+    public void setNewComment(String comment) {
+        this.newComment = comment;
+    }
+    
+
+    public CurrentUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(CurrentUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    public boolean isIsLikedByCurrentUser() {
+        return isLikedByCurrentUser;
+    }
+
+    public void setIsLikedByCurrentUser(boolean isLikedByCurrentUser) {
+        this.isLikedByCurrentUser = isLikedByCurrentUser;
+    }
+
+    public User getPostAuthor() {
+        return postAuthor;
+    }
+
+    public void setPostAuthor(User postAuthor) {
+        this.postAuthor = postAuthor;
+    }
 
     public int getRequestPhotoId() {
         return requestPhotoId;
@@ -65,34 +137,60 @@ public class Post implements Serializable {
     public String addSelectedPhoto(int photoID){
         postPhoto.setPhotoID(photoID);
         populate();
-        return "viewPost.xhtml";
+        return "post";
     }
-    public void populate(){
+    private void addPhotoDetails(){
         postPhoto = new Photo();
-        System.out.println(requestPhotoId);
+        postAuthor = new User();
         try{
-            crs.setCommand("select * from photos,users where photoid=?");
+            crs.setCommand("select * from photos,users where photos.USERID = users.USERID and photoid=?");
             crs.setInt(1, requestPhotoId);
             crs.execute();
             while(crs.next()){
-                postPhoto.setPhotoID(requestPhotoId);
+                postPhoto.setPhotoID(crs.getInt("photoID"));
                 postPhoto.setCaption(crs.getString("caption"));
                 postPhoto.setLocation(crs.getString("location"));
                 postPhoto.setPrice(crs.getDouble("price"));
                 postPhoto.setUserID(crs.getInt("userid"));
                 postPhoto.setPhotoSrc(crs.getString("photosrc"));
-                System.out.println(postPhoto.getPhotoSrc());
+                postAuthor.setUserID(crs.getInt("userid"));
+                postAuthor.setFirstName(crs.getString("firstname"));
+                postAuthor.setLastName(crs.getString("lastName"));
             }
             crs.close();
-            crs.setCommand("select count(*) from photos where photoid=?");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    private void addPhotoLikes(){
+        likes = 0;
+        isLikedByCurrentUser = false;
+        try{
+            crs.setCommand("select count(*) from likes where photoid=?");
             crs.setInt(1, postPhoto.getPhotoID());
+            crs.execute();
             while(crs.next()){
                 likes = crs.getInt(1);
             }
-            System.out.println(likes);
             crs.close();
-            comments = new ArrayList<>();
-            crs.setCommand("select * from comments where photoid=?");
+            crs.setCommand("select * from likes where photoid = ?");
+            crs.setInt(1, postPhoto.getPhotoID());
+            crs.execute();
+            while(crs.next()){
+                int userID = crs.getInt("userid");
+                if(userID==currentUser.getUserID()){
+                    isLikedByCurrentUser = true;
+                }
+            }
+            crs.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    private void addPhotoComments(){
+        comments = new ArrayList<>();
+        try{            
+            crs.setCommand("select * from comments,users where users.userid=comments.userid and photoid=?");
             crs.setInt(1, postPhoto.getPhotoID());
             crs.execute();
             while(crs.next()){
@@ -101,18 +199,30 @@ public class Post implements Serializable {
                 c.setCommentID(crs.getInt("commentid"));
                 c.setText(crs.getString("text"));
                 c.setUserID(crs.getInt("userID"));
+                c.setUsername(crs.getString("username"));
                 comments.add(c);
             }
-        }catch(Exception e){}
+            crs.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public void populate(){
+        addPhotoDetails();
+        addPhotoLikes();
+        addPhotoComments();
     }
     public Post() {
         try{
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             crs=RowSetProvider.newFactory().createCachedRowSet();
-            crs.setUrl("jdbc:derby://localhost:1527/coffee-gram");
-            crs.setUsername("guest");
-            crs.setPassword("1234");
-        } catch(Exception e){}
+            System.out.println(Singleton.getInstance().getDB());
+            crs.setUrl(Singleton.getInstance().getDB());
+            crs.setUsername(Singleton.getInstance().getUser());
+            crs.setPassword(Singleton.getInstance().getPassword());
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
     
 }

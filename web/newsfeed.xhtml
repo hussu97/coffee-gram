@@ -27,7 +27,7 @@ and open the template in the editor.
             
         </p>
         <h:outputLink class="btn btn-primary btn-large float-right" value="#{currentUser.addPost()}">Add a new Coffee</h:outputLink>
-            <h:link class="btn btn-success btn-large float-right" value="View your profile" outcome="profile.xhtml" includeViewParams="true">
+            <h:link class="btn btn-success btn-large float-right" value="View your profile" outcome="profile" includeViewParams="true">
                 <f:param value="#{newsFeed.currentUser.userID}" name="userID"/>
                   </h:link>
       </h:panelGroup>
@@ -43,7 +43,7 @@ and open the template in the editor.
                 <h4>#{i.caption}</h4>
               <!--<h4><%= coffee.name %></h4>-->
               <p>
-                  <h:link class="btn btn-outline-info btn-sm" value="More Info" outcome="viewPost.xhtml" includeViewParams="true">
+                  <h:link class="btn btn-outline-info btn-sm" value="More Info" outcome="post" includeViewParams="true">
                       <f:param value="#{i.photoID}" name="photoID"/>
                   </h:link>
                 <!--<a href="/coffees/<%= coffee._id %>" class="btn btn-primary">More Info</a>-->

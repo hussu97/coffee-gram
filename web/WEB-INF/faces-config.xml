@@ -39,4 +39,32 @@
             <to-view-id>/newsfeed.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/newsfeed.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>post</from-outcome>
+            <to-view-id>/post.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>profile</from-outcome>
+            <to-view-id>/profile.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-class>Beans.Singleton</managed-bean-class>
+        <managed-bean-name>sing</managed-bean-name>
+        <managed-bean-scope>application</managed-bean-scope>
+        <managed-property>
+            <property-name>DB</property-name>
+            <value>jdbc:derby://localhost:1527/coffee-gram</value>
+        </managed-property>
+        <managed-property>
+            <property-name>user</property-name>
+            <value>guest</value>
+        </managed-property>
+        <managed-property>
+            <property-name>password</property-name>
+            <value>1234</value>
+        </managed-property>
+    </managed-bean>
 </faces-config>

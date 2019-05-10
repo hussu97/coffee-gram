@@ -5,6 +5,8 @@
  */
 package Beans;
 
+import Beans.Singleton;
+import Hash.PasswordAuthentication;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +19,9 @@ import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -36,18 +41,32 @@ public class CurrentUser implements Serializable{
     private boolean priv;
     @ManagedProperty(value="#{photo}")
     private Photo newPost;
+    private Photo post;
     private Part newPostPhoto;
     private String newPostExt;
     private CachedRowSet crs = null;
+    private PasswordAuthentication pa;
 
     public CurrentUser() {
         try{
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             crs=RowSetProvider.newFactory().createCachedRowSet();
-            crs.setUrl("jdbc:derby://localhost:1527/coffee-gram");
-            crs.setUsername("guest");
-            crs.setPassword("1234");
-        } catch(Exception e){}
+            System.out.println(Singleton.getInstance().getDB());
+            crs.setUrl(Singleton.getInstance().getDB());
+            crs.setUsername(Singleton.getInstance().getUser());
+            crs.setPassword(Singleton.getInstance().getPassword());
+            pa = new PasswordAuthentication();
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public Photo getPost() {
+        return post;
+    }
+
+    public void setPost(Photo post) {
+        this.post = post;
     }
 
     public int getUserID() {
@@ -150,19 +169,21 @@ public class CurrentUser implements Serializable{
     }
     
     public String createUser(){
+        String securePassword = pa.hashPass(password.toCharArray());
+        System.out.println(securePassword);
         try{
             crs.setCommand("insert into users (username,firstName,lastName,password,privacy) values (?,?,?,?,?)");
             crs.setString(1, username);
             crs.setString(2, firstName);
             crs.setString(3, lastName);
-            crs.setString(4, password);
+            crs.setString(4, securePassword);
             crs.setBoolean(5, true);
             crs.execute();
             crs.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return "newsfeed";
+        return "login";
     }
     public String createPost(){
         try{
@@ -181,20 +202,21 @@ public class CurrentUser implements Serializable{
     }
     public String login(){
         try{
-            crs.setCommand("select * from users where username=? and password=?");
+            crs.setCommand("select * from users where username=?");
             crs.setString(1, username);
-            crs.setString(2, password);
             crs.execute();
             while(crs.next()){
+                String token = crs.getString("password");
+                if(!pa.authenticate(password.toCharArray(),token)){
+                    throw new Exception("Passwords do not match");
+                }
                 firstName = crs.getString("firstName");
                 userID = crs.getInt("userID");
                 lastName = crs.getString("lastName");
                 priv = crs.getBoolean("privacy");
             }
-            System.out.println(crs.size());
             if(crs.size()==0)
                 return "login";
-            System.out.println("userID: "+userID);
             crs.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -207,5 +229,38 @@ public class CurrentUser implements Serializable{
         newPostPhoto = null;
         newPostExt = "";
         return "addPost.xhtml";
+    }
+    public String editPost(Photo p){
+        post = p;
+        return "editPost.xhtml";
+    }
+    public void updatePost()throws IOException{
+        try{
+            crs.setCommand("Update photos set caption=?,price=?,location=? where photoid=?");
+            crs.setString(1, post.getCaption());
+            crs.setDouble(2, post.getPrice());
+            crs.setString(3, post.getLocation());
+            crs.setInt(4, post.getPhotoID());
+            crs.execute();
+            crs.close();
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            String s = ((HttpServletRequest) ec.getRequest()).getRequestURI();
+            int i = s.lastIndexOf('/');
+            String res =  s.substring(0, i);
+            System.out.println(res);
+            ec.redirect(res+"/post.xhtml?photoID="+post.getPhotoID());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    public String deletePost(){
+        try{
+            crs.setCommand("delete from photos where photoid=?");
+            crs.setInt(1, post.getPhotoID());
+            crs.execute();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return "newsfeed.xhtml";
     }
 }

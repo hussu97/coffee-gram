@@ -50,10 +50,13 @@ public class Profile implements Serializable{
         try{
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             crs=RowSetProvider.newFactory().createCachedRowSet();
-            crs.setUrl("jdbc:derby://localhost:1527/coffee-gram");
-            crs.setUsername("guest");
-            crs.setPassword("1234");
-        } catch(Exception e){}
+            System.out.println(Singleton.getInstance().getDB());
+            crs.setUrl(Singleton.getInstance().getDB());
+            crs.setUsername(Singleton.getInstance().getUser());
+            crs.setPassword(Singleton.getInstance().getPassword());
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public ArrayList<User> getFollowing() {
