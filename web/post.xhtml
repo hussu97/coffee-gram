@@ -119,7 +119,7 @@ and open the template in the editor.
               <hr/>
             <h:panelGroup layout="block">
               <h:panelGroup layout="block" class="row">
-                <h:panelGroup layout="block" class="text-left col-md-6">
+                <h:panelGroup layout="block" class="text-left col-6">
                   <c:if test="#{not post.isLikedByCurrentUser}">
                     <h:outputLink id="likeButton" class="btn btn-primary" value="javascript:void(0)" onclick="like()">
                       Like
@@ -130,7 +130,7 @@ and open the template in the editor.
                       Unlike</h:outputLink>
                   </c:if>
                 </h:panelGroup>
-                <h:panelGroup layout="block" class="text-right col-md-6">
+                <h:panelGroup layout="block" class="text-right col-6">
                   <h:outputLink class="btn btn-primary" id="add-comment-btn" value="javascript:void(0)"
                     onclick="addComment()">Leave a comment</h:outputLink>
                 </h:panelGroup>

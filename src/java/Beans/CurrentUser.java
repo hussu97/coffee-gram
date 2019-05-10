@@ -95,7 +95,7 @@ public class CurrentUser implements Serializable{
             InputStream in = null;
             this.newPostPhoto = newPostPhoto;
             in = newPostPhoto.getInputStream();
-            newPostExt = getFileExtension(this.newPostPhoto).trim();
+            newPostExt = getFileExtension(this.newPostPhoto).trim().toLowerCase();
             System.out.println(newPostExt);
             if(newPostExt.equals(".png")||newPostExt.equals(".jpg")){
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy-hhmmss.SSS");

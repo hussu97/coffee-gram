@@ -34,10 +34,24 @@ and open the template in the editor.
   <h:panelGroup layout="block" class="">
     <h:panelGroup layout="block" class="jumbotron">
       <h:panelGroup layout="block" class="container">
-        <h1>Hello #{profile.user.firstName} #{profile.user.lastName}</h1>
+        <h1>#{profile.user.firstName} #{profile.user.lastName}</h1>
+        <c:choose>
+            <c:when test="${profile.user.priv and profile.user.userID eq currentUser.userID}">
+            <h:outputLink id="publicBtn" class="btn btn-dark float-right btn-sm px-3 ml-2" value="javascript:void(0)" onclick="changePrivacy()">#{profile.user.priv ? 'Change to Public' : 'Change to Private'}</h:outputLink>
+        </c:when>
+        <c:otherwise>
+        <h:outputLabel class="float-right px-3 ml-2" value="${profile.user.priv ? 'Private Profile' : 'Public Profile'}"/>
+        </c:otherwise>
+            
+        </c:choose>
+        
         <h2>#{profile.user.username}</h2>
+        <c:if test="${(currentUser.userID ne profile.user.userID) and profile.user.priv eq false}">
+                <h:outputLink id="publicBtn" class="btn btn-dark float-right btn-sm px-3" value="javascript:void(0)" onclick="changePrivacy()">Follow Person</h:outputLink>
+            </c:if>
         <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
-        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+        
+        <ul class="nav nav-pills nav-fill py-2" id="pills-tab" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" id="pills-photos-tab" data-toggle="pill" href="#pills-photos"
               role="tab">Photos</a>
@@ -56,6 +70,8 @@ and open the template in the editor.
     <h:panelGroup layout="block" class="tab-content" id="pills-tabContent">
       <h:panelGroup layout="block" class="tab-pane fade show active" id="pills-photos">
         <h:panelGroup layout="block" class="row index">
+            <c:choose>
+                <c:when test="${profile.user.userID eq currentUser.userID or not profile.user.priv}">
           <c:forEach var="i" items="${profile.user.profilePhotos}">
             <h:panelGroup layout="block" class="col-md-3 col-sm-6 d-flex justify-content-center">
               <figure class="figure">
@@ -77,6 +93,11 @@ and open the template in the editor.
             </h:panelGroup>
             <!--<%});%>-->
           </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <h4 class="container text-center">Please follow the person to view the photos, if the user's profile is set to public</h4>
+                </c:otherwise>
+            </c:choose>
         </h:panelGroup>
       </h:panelGroup>
       <h:panelGroup layout="block" class="tab-pane fade container" id="pills-followers">
