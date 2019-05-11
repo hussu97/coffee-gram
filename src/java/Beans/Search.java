@@ -88,7 +88,7 @@ public class Search implements Serializable{
             locationResults = new ArrayList<>();
             ArrayList<String> locationResultsNamesWithDup = new ArrayList<>();
             try{
-                crs.setCommand("SELECT * FROM photos,locations WHERE photos.LOCATIONID=locations.LOCATIONID and LOWER(locationname) LIKE LOWER(?)");
+                crs.setCommand("SELECT * FROM photos,locations,users WHERE photos.LOCATIONID=locations.LOCATIONID and photos.userid=users.userid and LOWER(locationname) LIKE LOWER(?) and privacy=false");
                 String searchQueryText = "%"+searchText+"%";
                 crs.setString(1, searchQueryText);
                 crs.execute();

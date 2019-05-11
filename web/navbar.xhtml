@@ -14,14 +14,17 @@ and open the template in the editor.
     <h:panelGroup layout="block" class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <h:outputLink class="nav-link" value="newsfeed.xhtml">Site Statistics <span class="sr-only">(current)</span></h:outputLink>
+            <h:outputLink class="nav-link" value="statistics.xhtml">Site Statistics <span class="sr-only">(current)</span></h:outputLink>
         </li>
           <li class="nav-item">
-              <h:outputLink class="nav-link" value="#{currentUser.logout()}">Logout</h:outputLink>
+              <h:form>
+                  <h:commandButton class="nav-link bg-dark" style="border:none;" value="Logout" action="#{currentUser.logout()}"/>
+              </h:form>
         </li>
       </ul>
       <h:form class="form-inline my-2 my-lg-0">
-          <h:inputText class="form-control mr-sm-2" a:placeholder="Search" value="#{search.searchText}"/>
+          <label class="text-secondary px-3 ">Search our website</label>
+          <h:inputText class="form-control mr-sm-2" a:placeholder="..." value="#{search.searchText}"/>
         <h:selectOneMenu class="form-control my-2 my-sm-0 mr-2" value="#{search.searchType}">
                   <f:selectItem itemLabel="By Location" itemValue="location"/>
                   <f:selectItem itemLabel="By User" itemValue="user"/>

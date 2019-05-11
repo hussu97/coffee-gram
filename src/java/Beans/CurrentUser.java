@@ -60,6 +60,8 @@ public class CurrentUser implements Serializable{
     }
 
     public void setIsLoggedIn(boolean isLoggedIn) {
+        System.out.println("i am called");
+        System.out.println(isLoggedIn);
         this.isLoggedIn = isLoggedIn;
     }
     
@@ -308,11 +310,11 @@ public class CurrentUser implements Serializable{
             System.out.println(e.getMessage());
             return "login";
         }
-        isLoggedIn = true;
+        setIsLoggedIn(true);
         return "newsfeed";
     }
     public String logout(){
-        isLoggedIn = false;
+        setIsLoggedIn(false);
         return "login.xhtml";
     }
     public void updateProfile()throws IOException{

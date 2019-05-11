@@ -38,7 +38,7 @@ public class NewsFeed implements Serializable {
 
     public ArrayList<Photo> getFeedPhotos() {
         try{
-            crs.setCommand("select * from followings,photos,users where photos.USERID=users.USERID and followerUserID=? and users.userid != ? and users.PRIVACY = false");
+            crs.setCommand("select * from followings,photos,users,locations where photos.USERID=users.USERID and photos.locationid=locations.locationid and followerUserID=? and users.userid != ? and users.PRIVACY = false");
             crs.setInt(1, currentUser.getUserID());
             crs.setInt(2, currentUser.getUserID());
             crs.execute();
