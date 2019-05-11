@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        <h:panelGroup layout="block" class="list-group-item list-group-item-action">
+              <h:panelGroup layout="block" class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">#{i.username}</h5>
+                <small>Account created on #{i.dateCreated}</small>
+              </h:panelGroup>
+              <h:panelGroup layout="block" class="d-flex w-100 justify-content-between">
+                <small>#{i.firstName} #{i.lastName}</small>
+                <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile"
+                  includeViewParams="true">
+                  <f:param value="#{i.userID}" name="userID" />
+                </h:link>
+              </h:panelGroup>
+            </h:panelGroup>
+</ui:composition>

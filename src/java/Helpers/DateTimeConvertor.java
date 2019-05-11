@@ -19,7 +19,9 @@ public class DateTimeConvertor {
         String pattern = "dd-MM-yy HH:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String date = simpleDateFormat.format(time);
-        System.out.println(date);
         return date;
+    }
+    public static int diffInDays(Timestamp timestamp){
+        return (int)(System.currentTimeMillis()-timestamp.getTime())/(1000*60*60*24);
     }
 }

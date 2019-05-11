@@ -2,15 +2,19 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="login.xhtml" x="361" y="185" zoom="true"/>
-        <Node id="addPost.xhtml" x="662" y="458" zoom="true"/>
-        <Node id="newsfeed.xhtml" x="658" y="278" zoom="false"/>
-        <Node id="profile.xhtml" x="717" y="159" zoom="true"/>
+        <Node id="search.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="newsfeed.xhtml" x="292" y="268" zoom="false"/>
+        <Node id="welcomePrimefaces.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="post.xhtml" x="306" y="133" zoom="true"/>
         <Node id="landing.xhtml" x="-19" y="244" zoom="true"/>
-        <Node id="post.xhtml" x="150" y="150" zoom="true"/>
-        <Node id="navbar.xhtml" x="400" y="150" zoom="true"/>
-        <Node id="register.xhtml" x="346" y="427" zoom="true"/>
-        <Node id="editPost.xhtml" x="141" y="57" zoom="true"/>
+        <Node id="postListTemplate.xhtml" x="-242" y="319" zoom="true"/>
+        <Node id="navbar.xhtml" x="-260" y="423" zoom="true"/>
+        <Node id="editPost.xhtml" x="290" y="38" zoom="true"/>
+        <Node id="userListTemplate.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="login.xhtml" x="12" y="410" zoom="true"/>
+        <Node id="addPost.xhtml" x="305" y="502" zoom="true"/>
+        <Node id="profile.xhtml" x="530" y="269" zoom="true"/>
+        <Node id="register.xhtml" x="1" y="581" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

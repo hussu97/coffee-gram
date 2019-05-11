@@ -42,10 +42,9 @@ and open the template in the editor.
     <h:panelGroup layout="block" class="container">
     <h:panelGroup layout="block" class="row index">
       <c:forEach var="i" items="${newsFeed.feedPhotos}">
-          <ui:include src="postTemplate.xhtml"/>
+          <ui:include src="postListTemplate.xhtml"/>
       </c:forEach>
     </h:panelGroup>
-
   </h:panelGroup>
 </h:body>
 

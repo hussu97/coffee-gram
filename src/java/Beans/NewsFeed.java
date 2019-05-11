@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Helpers.DBGenerators;
 import Helpers.DateTimeConvertor;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,39 +37,12 @@ public class NewsFeed implements Serializable {
     }
 
     public ArrayList<Photo> getFeedPhotos() {
-        feedPhotos = new ArrayList<>();
         try{
             crs.setCommand("select * from followings,photos,users where photos.USERID=users.USERID and followerUserID=? and users.userid != ? and users.PRIVACY = false");
             crs.setInt(1, currentUser.getUserID());
             crs.setInt(2, currentUser.getUserID());
             crs.execute();
-            while(crs.next()){
-                Photo p = new Photo();
-                p.setUserID(crs.getInt("userid"));
-                p.setPhotoID(crs.getInt("photoID"));
-                p.setLocation(crs.getString("location"));
-                p.setCaption(crs.getString("caption"));
-                p.setPhotoSrc(crs.getString("photosrc"));
-                p.setPrice(crs.getDouble("price"));
-                p.setTimestamp(crs.getTimestamp("ts"));
-                p.setDate(DateTimeConvertor.timeStampToDate(p.getTimestamp()));
-                feedPhotos.add(p);
-            }
-            crs.close();
-            for(Photo p:feedPhotos){
-                crs.setCommand("select count(*) from likes where photoid=?");
-                crs.setInt(1, p.getPhotoID());
-                crs.execute();
-                while(crs.next())
-                    p.setLikeCount(crs.getInt(1));
-                crs.close();
-                crs.setCommand("select count(*) from comments where photoid=?");
-                crs.setInt(1, p.getPhotoID());
-                crs.execute();
-                while(crs.next())
-                    p.setCommentCount(crs.getInt(1));
-                crs.close();
-            }
+            feedPhotos = DBGenerators.buildPhotoList(crs);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

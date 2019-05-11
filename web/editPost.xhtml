@@ -33,8 +33,10 @@ and open the template in the editor.
         </h:panelGroup>
         <h:panelGroup layout="block" class="form-group">
           <label>Coffee Location</label>
-          <h:inputText class="form-control" value="#{currentUser.post.location}" a:placeholder="Enter Coffee location"
-            required="true" requiredMessage="Please enter valid location" />
+          <h:selectOneMenu class="form-control" value="#{currentUser.post.locationID}" required="true" requiredMessage="Please enter valid location">
+              <f:selectItem itemLabel="Please select a location" itemValue="#{null}" noSelectionOption="true"/>
+              <f:selectItems value="#{currentUser.locations}"/>
+          </h:selectOneMenu>
         </h:panelGroup>
         <h:panelGroup layout="block" class="form-group">
           <h:commandButton value="Change Coffee Details" action="#{currentUser.updatePost}"

@@ -53,6 +53,16 @@ public class CurrentUser implements Serializable{
     private ArrayList<SelectItem> locations;
     private CachedRowSet crs = null;
     private PasswordAuthentication pa;
+    private boolean isLoggedIn;
+
+    public boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
+    }
+    
 
     public ArrayList<SelectItem> getLocations() {
         locations = new ArrayList<>();
@@ -239,6 +249,26 @@ public class CurrentUser implements Serializable{
         }
         return "login";
     }
+    public String updateUser(){
+        try{
+            crs.setCommand("Update photos set caption=?,price=?,location=? where photoid=?");
+            crs.setString(1, post.getCaption());
+            crs.setDouble(2, post.getPrice());
+            crs.setString(3, post.getLocation());
+            crs.setInt(4, post.getPhotoID());
+            crs.execute();
+            crs.close();
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            String s = ((HttpServletRequest) ec.getRequest()).getRequestURI();
+            int i = s.lastIndexOf('/');
+            String res =  s.substring(0, i);
+            System.out.println(res);
+            ec.redirect(res+"/post.xhtml?photoID="+post.getPhotoID());
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return "newsfeed";
+    }
     public String createPost(){
         try{
             crs.setCommand("insert into photos (photosrc,caption,price,locationid,userID) values (?,?,?,?,?)");
@@ -278,7 +308,12 @@ public class CurrentUser implements Serializable{
             System.out.println(e.getMessage());
             return "login";
         }
+        isLoggedIn = true;
         return "newsfeed";
+    }
+    public String logout(){
+        isLoggedIn = false;
+        return "login.xhtml";
     }
     public String addPost(){
         newPost = new Photo();
@@ -292,10 +327,10 @@ public class CurrentUser implements Serializable{
     }
     public void updatePost()throws IOException{
         try{
-            crs.setCommand("Update photos set caption=?,price=?,location=? where photoid=?");
+            crs.setCommand("Update photos set caption=?,price=?,locationid=? where photoid=?");
             crs.setString(1, post.getCaption());
             crs.setDouble(2, post.getPrice());
-            crs.setString(3, post.getLocation());
+            crs.setInt(3, post.getLocationID());
             crs.setInt(4, post.getPhotoID());
             crs.execute();
             crs.close();

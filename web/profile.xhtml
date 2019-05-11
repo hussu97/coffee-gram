@@ -78,14 +78,10 @@ and open the template in the editor.
           </h:panelGroup>
           <h:panelGroup layout="block" class="col-3">
             <h:panelGroup layout="block" rendered="${profile.user.userID eq currentUser.userID}">
-              <f:view>
-                <h:form>
                   <h:outputLink id="privacyBtn" class="btn btn-dark btn-sm px-3 ml-2 privacyBtn"
                     value="javascript:void(0)"
                     onclick="if(confirm('You sure you want to change the privacy settings?')) changePrivacy();">
                     ${profile.user.priv ? 'Change to Public' : 'Change to Private'}</h:outputLink>
-                </h:form>
-              </f:view>
             </h:panelGroup>
             <h:panelGroup layout="block" rendered="${profile.user.userID ne currentUser.userID}">
               <h:outputLabel class="px-3 ml-2" value="${profile.user.priv ? 'Private Profile' : 'Public Profile'}" />
@@ -118,7 +114,7 @@ and open the template in the editor.
           <c:choose>
             <c:when test="${profile.user.userID eq currentUser.userID or not profile.user.priv}">
                 <c:forEach var="i" items="${profile.user.profilePhotos}">
-                <ui:include src="postTemplate.xhtml"/>
+                <ui:include src="postListTemplate.xhtml"/>
               </c:forEach>
             </c:when>
             <c:otherwise>
@@ -130,37 +126,13 @@ and open the template in the editor.
       <h:panelGroup layout="block" class="tab-pane fade container" id="pills-followers">
         <h:panelGroup layout="block" class="list-group">
           <c:forEach var="i" items="${profile.followers}">
-            <h:panelGroup layout="block" class="list-group-item list-group-item-action">
-              <h:panelGroup layout="block" class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">#{i.username}</h5>
-                <small>3 days ago</small>
-              </h:panelGroup>
-              <h:panelGroup layout="block" class="d-flex w-100 justify-content-between">
-                <small>#{i.firstName} #{i.lastName}</small>
-                <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile"
-                  includeViewParams="true">
-                  <f:param value="#{i.userID}" name="userID" />
-                </h:link>
-              </h:panelGroup>
-            </h:panelGroup>
+              <ui:include src="userListTemplate.xhtml"/>
           </c:forEach>
         </h:panelGroup>
       </h:panelGroup>
       <h:panelGroup layout="block" class="tab-pane fade container" id="pills-following">
         <c:forEach var="i" items="${profile.following}">
-          <h:panelGroup layout="block" class="list-group-item list-group-item-action">
-            <h:panelGroup layout="block" class="d-flex w-100 justify-content-between container">
-              <h5 class="mb-1">#{i.username}</h5>
-              <small>3 days ago</small>
-            </h:panelGroup>
-            <h:panelGroup layout="block" class="d-flex w-100 justify-content-between container">
-              <small>#{i.firstName} #{i.lastName}</small>
-              <h:link class="btn btn-success btn-large float-right" value="View Profile" outcome="profile"
-                includeViewParams="true">
-                <f:param value="#{i.userID}" name="userID" />
-              </h:link>
-            </h:panelGroup>
-          </h:panelGroup>
+            <ui:include src="userListTemplate.xhtml"/>
         </c:forEach>
       </h:panelGroup>
     </h:panelGroup>

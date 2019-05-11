@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,6 +35,8 @@ public class User implements Serializable{
     private String password;
     private int userID;
     private boolean priv;
+    private String dateCreated;
+    private Timestamp ts;
     private ArrayList<Photo> profilePhotos;
     private CachedRowSet crs = null;
 
@@ -50,6 +53,23 @@ public class User implements Serializable{
         }
     }
 
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
+    public Timestamp getTs() {
+        return ts;
+    }
+
+    public void setTs(Timestamp ts) {
+        this.ts = ts;
+    }
+
+    
     public int getUserID() {
         return userID;
     }

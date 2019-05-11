@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Helpers.DBGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
 import javax.faces.bean.ManagedBean;
@@ -93,41 +94,15 @@ public class Profile implements Serializable{
         }
     }
     private void addUserPhotos(){
-        ArrayList<Photo> photos = new ArrayList<>();
         try{
             crs.setCommand("select * from photos,locations where photos.locationid=locations.locationid and userID=?");
             crs.setInt(1, user.getUserID());
             crs.execute();
-            while(crs.next()){
-                Photo p = new Photo();
-                p.setPhotoID(crs.getInt("photoID"));
-                p.setCaption(crs.getString("caption"));
-                p.setLocation(crs.getString("locationname"));
-                p.setLocationID(crs.getInt("locationid"));
-                p.setPrice(crs.getDouble("price"));
-                p.setPhotoSrc(crs.getString("photosrc"));
-                p.setUserID(crs.getInt("userID"));
-                photos.add(p);
-            }
-            for(Photo p:photos){
-                crs.setCommand("select count(*) from likes where photoid=?");
-                crs.setInt(1, p.getPhotoID());
-                crs.execute();
-                while(crs.next())
-                    p.setLikeCount(crs.getInt(1));
-                crs.close();
-                crs.setCommand("select count(*) from comments where photoid=?");
-                crs.setInt(1, p.getPhotoID());
-                crs.execute();
-                while(crs.next())
-                    p.setCommentCount(crs.getInt(1));
-                crs.close();
-            }
-            crs.close();
+            ArrayList<Photo> photos = DBGenerators.buildPhotoList(crs);
+            user.setProfilePhotos(photos);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        user.setProfilePhotos(photos);
     }
     private void addFollowerList(){
         followers = new ArrayList<>();
@@ -135,16 +110,7 @@ public class Profile implements Serializable{
             crs.setCommand("select * from users where userid in (select followeruserID from users,followings where followingUserID=userID and userID=?)");
             crs.setInt(1, user.getUserID());
             crs.execute();
-            while(crs.next()){
-                User u = new User();
-                u.setFirstName(crs.getString("firstName"));
-                u.setLastName(crs.getString("lastName"));
-                u.setPriv(crs.getBoolean("privacy"));
-                u.setUserID(crs.getInt("userID"));
-                u.setUsername(crs.getString("username"));
-                followers.add(u);
-            }
-            crs.close();
+            followers = DBGenerators.buildUserList(crs);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
@@ -155,16 +121,7 @@ public class Profile implements Serializable{
             crs.setCommand("select * from users where userid in (select followinguserID from users,followings where followerUserID=userID and userID=?)");
             crs.setInt(1, user.getUserID());
             crs.execute();
-            while(crs.next()){
-                User u = new User();
-                u.setFirstName(crs.getString("firstName"));
-                u.setLastName(crs.getString("lastName"));
-                u.setPriv(crs.getBoolean("privacy"));
-                u.setUserID(crs.getInt("userID"));
-                u.setUsername(crs.getString("username"));
-                following.add(u);
-            }
-            crs.close();
+            following = DBGenerators.buildUserList(crs);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
