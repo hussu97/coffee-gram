@@ -20,56 +20,62 @@ and open the template in the editor.
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
   </script>
 </head>
-
 <h:body>
-  <ui:include src="navbar.xhtml" />
-  <h:panelGroup layout="block" class="">
-    <h:panelGroup layout="block" class="jumbotron p-4 text-center">
-      <c:choose>
-        <c:when test="${search.locationResults.size() eq 0}">
-            <h1>No results found for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...</h1>
-        </c:when>
-        <c:otherwise>
-          <h1>Showing results for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...</h1>
-        </c:otherwise>
-      </c:choose>
-    </h:panelGroup>
-       <c:if test="${search.searchType eq 'location'}">
-    <h:panelGroup layout="block" class="px-5 mx-auto">
-        <h:panelGroup layout="block" class="accordion" id="accordionExample">
-            <c:forEach var="h" varStatus="loop" items="#{search.locationResultsNames}">
-            <h:panelGroup layout="block" class="card">
-              <h:panelGroup layout="block" class="card-header" id="heading-${loop.index}">
-                <h5 class="mb-0">
-                    <button class="btn" type="button" data-toggle="collapse" data-target="#collapse-${loop.index}">
-                    #{h}
-                  </button>
-                </h5>
-              </h:panelGroup>
-                <div layout="block" id="collapse-${loop.index}" class="collapse show" data-parent="#accordionExample">
-                <h:panelGroup class="card-body row index">
-                  <c:forEach var="i" items="#{search.locationResults}">
-                    <c:if test="${h eq i.location}">
-                      <ui:include src="postListTemplate.xhtml" />
-                    </c:if>
-                  </c:forEach>
-                </h:panelGroup>
-              </div>
-            </h:panelGroup>
-          </c:forEach>
-          </h:panelGroup>
+  <c:choose>
+    <c:when test="${currentUser.isLoggedIn}">
+      <ui:include src="navbar.xhtml" />
+      <h:panelGroup layout="block" class="">
+        <h:panelGroup layout="block" class="jumbotron p-4 text-center">
+          <c:choose>
+            <c:when test="${search.locationResults.size() eq 0}">
+              <h1>No results found for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...
+              </h1>
+            </c:when>
+            <c:otherwise>
+              <h1>Showing results for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...
+              </h1>
+            </c:otherwise>
+          </c:choose>
         </h:panelGroup>
+        <c:if test="${search.searchType eq 'location'}">
+          <h:panelGroup layout="block" class="px-5 mx-auto">
+            <h:panelGroup layout="block" class="accordion" id="accordionExample">
+              <c:forEach var="h" varStatus="loop" items="#{search.locationResultsNames}">
+                <h:panelGroup layout="block" class="card">
+                  <h:panelGroup layout="block" class="card-header" id="heading-${loop.index}">
+                    <h5 class="mb-0">
+                      <button class="btn" type="button" data-toggle="collapse" data-target="#collapse-${loop.index}">
+                        #{h}
+                      </button>
+                    </h5>
+                  </h:panelGroup>
+                  <div layout="block" id="collapse-${loop.index}" class="collapse show" data-parent="#accordionExample">
+                    <h:panelGroup class="card-body row index">
+                      <c:forEach var="i" items="#{search.locationResults}">
+                        <c:if test="${h eq i.location}">
+                          <ui:include src="postListTemplate.xhtml" />
+                        </c:if>
+                      </c:forEach>
+                    </h:panelGroup>
+                  </div>
+                </h:panelGroup>
+              </c:forEach>
+            </h:panelGroup>
+          </h:panelGroup>
         </c:if>
         <c:if test="${search.searchType eq 'user'}">
-            <h:panelGroup layout="block" class="px-5 mx-auto">
+          <h:panelGroup layout="block" class="px-5 mx-auto">
             <c:forEach var="i" items="#{search.userResults}">
-                <ui:include src="userListTemplate.xhtml"/>
+              <ui:include src="userListTemplate.xhtml" />
             </c:forEach>
-            </h:panelGroup>
+          </h:panelGroup>
         </c:if>
-      
-    
-  </h:panelGroup>
+      </h:panelGroup>
+    </c:when>
+    <c:otherwise>
+      <ui:include src="403.xhtml" />
+    </c:otherwise>
+  </c:choose>
 </h:body>
 
 </html>

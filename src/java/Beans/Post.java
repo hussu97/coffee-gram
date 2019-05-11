@@ -61,8 +61,6 @@ public class Post implements Serializable {
             crs.setInt(1, commentID);
             crs.execute();
             crs.close();
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI()+"?photoID="+requestPhotoId);
         }catch(Exception e){
             System.out.println("errorAdComment: "+e.getMessage());
         }

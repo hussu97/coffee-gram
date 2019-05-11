@@ -17,7 +17,7 @@
       var encodedString = "&lt;input id='" + commentClass +
           "' type='text' class='form-control' placeholder='Add Text to Save' value='" + commentElement
           .text() + "'>";
-var decodedText = $("<p/>").html(encodedString).text(); 
+        var decodedText = $("<p/>").html(encodedString).text(); 
       if (buttonElement.text().trim() === 'Edit') {
         buttonElement.text('Save');
         $(commentElement).replaceWith(decodedText);
@@ -39,5 +39,10 @@ var decodedText = $("<p/>").html(encodedString).text();
           })
         }
       }
+    }
+    function deleteComment(i) {
+        if(confirm('Are you sure you want to do this?')){
+            console.log(i);
+        }
     }
 

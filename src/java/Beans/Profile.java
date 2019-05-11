@@ -100,6 +100,7 @@ public class Profile implements Serializable{
             crs.execute();
             ArrayList<Photo> photos = DBGenerators.buildPhotoList(crs);
             user.setProfilePhotos(photos);
+            photos.sort((obj2,obj1)-> obj1.getTimestamp().compareTo(obj2.getTimestamp()));
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

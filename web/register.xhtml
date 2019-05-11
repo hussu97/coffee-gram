@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Login</title>
@@ -24,15 +25,19 @@
                         <h:form>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>First Name</label>
-                                <h:inputText value="#{currentUser.firstName}" class="form-control" a:placeholder="John" />
+                                <h:inputText value="#{currentUser.firstName}" class="form-control" a:placeholder="John" required="true">                         
+                                </h:inputText>
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Last Name</label>
-                                <h:inputText value="#{currentUser.lastName}" class="form-control" a:placeholder="Doe" />
+                                <h:inputText value="#{currentUser.lastName}" class="form-control" a:placeholder="Doe" required="true"/>
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Your username</label>
-                                <h:inputText value="#{currentUser.username}" class="form-control" a:placeholder="JohhnyDough" />
+                                <h:inputText id="username" value="#{currentUser.username}" class="form-control" a:placeholder="JohhnyDough" required="true">
+                                    <f:validator validatorId="com.Validators.UsernameValidator"/>
+                                </h:inputText>
+                                <h:message for="username" style="color:red" />
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Your password</label>
@@ -40,7 +45,7 @@
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Confirm Password</label>
-                                <h:inputSecret class="form-control" a:placeholder="******" />
+                                <h:inputSecret class="form-control" a:placeholder="******" required="true"/>
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <h:commandButton type="submit" value="Sign up" action="#{currentUser.createUser}" class="btn btn-primary btn-block"/>

@@ -17,40 +17,34 @@ and open the template in the editor.
   <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
   <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
-
 <h:body>
   <c:choose>
     <c:when test="${currentUser.isLoggedIn}">
       <h:panelGroup layout="block" class="container py-3">
-        <h1 id="formTitle">Edit your post</h1>
+        <h1 id="formTitle">Edit your personal details</h1>
         <h:form enctype="multipart/form-data">
           <h:panelGroup layout="block" class="rows">
             <h:panelGroup layout="block" class="form-group">
-              <label>Coffee Caption</label>
-              <h:inputText class="form-control" value="#{currentUser.post.caption}" a:autofocus="true"
-                a:placeholder="Enter Coffee caption" required="true" requiredMessage="Please enter valid caption" />
+              <label>Username</label>
+              <h:inputText class="form-control" value="#{currentUser.username}" a:placeholder="Enter Username"
+                disabled="true" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
-              <label>Coffee Price</label>
-              <h:inputText class="form-control" value="#{currentUser.post.price}" a:placeholder="Enter Coffee price"
-                required="true" requiredMessage="Please enter valid price" />
+              <label>First Name</label>
+              <h:inputText class="form-control" value="#{currentUser.firstName}" a:placeholder="John" required="true"
+                requiredMessage="Please enter valid first name" a:autofocus="true" />
+              <h:message for="lastName" style="color:red" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
-              <label>Coffee Location</label>
-              <h:selectOneMenu class="form-control" value="#{currentUser.post.locationID}" required="true"
-                requiredMessage="Please enter valid location">
-                <f:selectItem itemLabel="Please select a location" itemValue="#{null}" noSelectionOption="true" />
-                <f:selectItems value="#{currentUser.locations}" />
-              </h:selectOneMenu>
+              <label>Last Name</label>
+              <h:inputText id="lastName" class="form-control" value="#{currentUser.lastName}" a:placeholder="Doe"
+                required="true" requiredMessage="Please enter valid last name" />
+              <h:message for="lastName" style="color:red" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
-              <h:commandButton value="Change Coffee Details" action="#{currentUser.updatePost}"
+              <h:commandButton value="Change User Details" action="#{currentUser.updateProfile}"
                 class="btn btn-lg btn-outline-success btn-block" />
             </h:panelGroup>
-            <h:form>
-              <h:commandButton value="Delete" onclick="return confirm('Really want to do that?')"
-                action="#{currentUser.deletePost}" class="btn btn-danger btn-sm float-right px-3 ml-2" />
-            </h:form>
             <h:outputLink class="badge badge-primary" value="javascript:history.back()">Back</h:outputLink>
           </h:panelGroup>
         </h:form>

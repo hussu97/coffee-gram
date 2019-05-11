@@ -315,6 +315,24 @@ public class CurrentUser implements Serializable{
         isLoggedIn = false;
         return "login.xhtml";
     }
+    public void updateProfile()throws IOException{
+        try{
+            crs.setCommand("Update users set firstname=?,lastname=? where userid=?");
+            crs.setString(1, firstName);
+            crs.setString(2, lastName);
+            crs.setInt(3, userID);
+            crs.execute();
+            crs.close();
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            String s = ((HttpServletRequest) ec.getRequest()).getRequestURI();
+            int i = s.lastIndexOf('/');
+            String res =  s.substring(0, i);
+            System.out.println(res);
+            ec.redirect(res+"/profile.xhtml?userID="+userID);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
     public String addPost(){
         newPost = new Photo();
         newPostPhoto = null;

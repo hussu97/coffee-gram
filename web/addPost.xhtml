@@ -6,7 +6,9 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,44 +25,53 @@ and open the template in the editor.
       $(this).next('.f\\:custom-file-label').addClass("selected").html(fileName);
     })
   </script>
-  
 </head>
-
 <h:body>
-  <h:panelGroup layout="block" class="container">
-    <h1 id="formTitle">Create New Coffee</h1>
-    <h:form enctype="multipart/form-data">
-      <h:panelGroup layout="block" class="rows">
-        <h:panelGroup layout="block" class="form-group">
-          <label>Coffee Caption</label>
-          <h:inputText class="form-control" value="#{currentUser.newPost.caption}" a:autofocus="true" a:placeholder="Enter Coffee caption" required="true" requiredMessage="Please enter valid caption"/>
-        </h:panelGroup>
-        <h:panelGroup layout="block" class="form-group">
-          <label>Coffee Price</label>
-          <h:inputText class="form-control" value="#{currentUser.newPost.price}" a:placeholder="Enter Coffee price" required="true" requiredMessage="Please enter valid price"/>
-        </h:panelGroup>
-        <h:panelGroup layout="block" class="form-group">
-          <label>Coffee Location</label>
-          <h:selectOneMenu class="form-control" value="#{currentUser.newPost.locationID}" required="true" requiredMessage="Please enter valid location">
-              <f:selectItems value="#{currentUser.locations}"/>
-          </h:selectOneMenu>
-        </h:panelGroup>
-        <h:panelGroup layout="block" class="form-group">
-          <label>Image</label>
-          <h:panelGroup class="custom-file">
-              <h:inputFile class="custom-file-input" value="#{currentUser.newPostPhoto}" id="inputGroupImage01" required="true" requiredMessage="Please submit an image"/>
-            <label class="custom-file-label" for="inputGroupImage01">Upload image</label>
+  <c:choose>
+    <c:when test="${currentUser.isLoggedIn}">
+      <h:panelGroup layout="block" class="container">
+        <h1 id="formTitle">Create New Coffee</h1>
+        <h:form enctype="multipart/form-data">
+          <h:panelGroup layout="block" class="rows">
+            <h:panelGroup layout="block" class="form-group">
+              <label>Coffee Caption</label>
+              <h:inputText class="form-control" value="#{currentUser.newPost.caption}" a:autofocus="true"
+                a:placeholder="Enter Coffee caption" required="true" requiredMessage="Please enter valid caption" />
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="form-group">
+              <label>Coffee Price</label>
+              <h:inputText class="form-control" value="#{currentUser.newPost.price}" a:placeholder="Enter Coffee price"
+                required="true" requiredMessage="Please enter valid price" />
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="form-group">
+              <label>Coffee Location</label>
+              <h:selectOneMenu class="form-control" value="#{currentUser.newPost.locationID}" required="true"
+                requiredMessage="Please enter valid location">
+                <f:selectItems value="#{currentUser.locations}" />
+              </h:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="form-group">
+              <label>Image</label>
+              <h:panelGroup class="custom-file">
+                <h:inputFile class="custom-file-input" value="#{currentUser.newPostPhoto}" id="inputGroupImage01"
+                  required="true" requiredMessage="Please submit an image" />
+                <label class="custom-file-label" for="inputGroupImage01">Upload image</label>
+              </h:panelGroup>
+              <small id="urlHelp" class="form-text text-muted">Image type must be png or jpg.</small>
+            </h:panelGroup>
+            <h:panelGroup layout="block" class="form-group">
+              <h:commandButton value="Add Coffee" action="#{currentUser.createPost}"
+                class="btn btn-lg btn-outline-success btn-block" />
+            </h:panelGroup>
+            <h:outputLink class="badge badge-primary" value="newsfeed.xhtml">Back</h:outputLink>
           </h:panelGroup>
-          <small id="urlHelp" class="form-text text-muted">Image type must be png or jpg.</small>
-        </h:panelGroup>
-        <h:panelGroup layout="block" class="form-group">
-            <h:commandButton value="Add Coffee" action="#{currentUser.createPost}"
-            class="btn btn-lg btn-outline-success btn-block" />
-        </h:panelGroup>
-        <h:outputLink class="badge badge-primary" value="newsfeed.xhtml">Back</h:outputLink>
+        </h:form>
       </h:panelGroup>
-    </h:form>
-  </h:panelGroup>
+    </c:when>
+    <c:otherwise>
+      <ui:include src="403.xhtml" />
+    </c:otherwise>
+  </c:choose>
 </h:body>
 
 </html>
