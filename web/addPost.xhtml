@@ -41,7 +41,9 @@ and open the template in the editor.
         </h:panelGroup>
         <h:panelGroup layout="block" class="form-group">
           <label>Coffee Location</label>
-          <h:inputText class="form-control" value="#{currentUser.newPost.location}" a:placeholder="Enter Coffee location" required="true" requiredMessage="Please enter valid location"/>
+          <h:selectOneMenu class="form-control" value="#{currentUser.newPost.locationID}" required="true" requiredMessage="Please enter valid location">
+              <f:selectItems value="#{currentUser.locations}"/>
+          </h:selectOneMenu>
         </h:panelGroup>
         <h:panelGroup layout="block" class="form-group">
           <label>Image</label>

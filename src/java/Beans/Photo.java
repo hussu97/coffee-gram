@@ -6,6 +6,7 @@
 package Beans;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -23,6 +24,54 @@ public class Photo implements Serializable {
     private String caption;
     private double price;
     private String location;
+    private int locationID;
+    private int likeCount;
+    private int commentCount;
+    private String date;
+    private Timestamp timestamp;
+
+    public int getLocationID() {
+        return locationID;
+    }
+
+    public void setLocationID(int locationID) {
+        this.locationID = locationID;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+    
+    
+    public int getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(int likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
+    }
+    
+    
     
     public Photo() {
     }

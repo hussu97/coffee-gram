@@ -3,12 +3,14 @@
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
         <Node id="login.xhtml" x="361" y="185" zoom="true"/>
-        <Node id="addPost.xhtml" x="918" y="390" zoom="true"/>
+        <Node id="addPost.xhtml" x="662" y="458" zoom="true"/>
         <Node id="newsfeed.xhtml" x="658" y="278" zoom="false"/>
-        <Node id="profile.xhtml" x="1002" y="224" zoom="true"/>
+        <Node id="profile.xhtml" x="717" y="159" zoom="true"/>
         <Node id="landing.xhtml" x="-19" y="244" zoom="true"/>
         <Node id="post.xhtml" x="150" y="150" zoom="true"/>
-        <Node id="register.xhtml" x="380" y="399" zoom="true"/>
+        <Node id="navbar.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="register.xhtml" x="346" y="427" zoom="true"/>
+        <Node id="editPost.xhtml" x="141" y="57" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

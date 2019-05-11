@@ -7,23 +7,58 @@ and open the template in the editor.
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
   xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-  xmlns:f="http://xmlns.jcp.org/jsf/core">
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <h:head>
   <title>CoffeeGram</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
     integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
   </script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
   </script>
-
+  <script>
+    changePrivacy = () => {
+      data = {
+        userid: #{
+          currentUser.userID
+        }
+      }
+      $.post('privacy', data, (res) => {
+        console.log(res);
+        if (res == 'true')
+          $('.privacyBtn').text('Change to Public');
+        else
+          $('.privacyBtn').text('Change to Private');
+      })
+    }
+    changeFollowing = () => {
+      data = {
+        followingid: #{
+          profile.user.userID
+        },
+        followerid: #{
+          currentUser.userID
+        }
+      }
+      var followBtn = $('.followBtn');
+      console.log(followBtn.text());
+      if (followBtn.text().trim() === 'Follow') {
+        data.DBaction = 'insert';
+      } else {
+        data.DBaction = 'remove'
+      }
+      $.post('following', data, (res) => {
+        location.reload();
+      })
+    }
+  </script>
 </h:head>
 
 <h:body>
@@ -31,73 +66,65 @@ and open the template in the editor.
     <f:viewParam name="userID" value="#{profile.requestUserId}" />
     <f:viewAction action="#{profile.populate()}" />
   </f:metadata>
+    <ui:include src="navbar.xhtml"/>
   <h:panelGroup layout="block" class="">
-    <h:panelGroup layout="block" class="jumbotron">
+    <h:panelGroup layout="block" class="jumbotron py-5">
       <h:panelGroup layout="block" class="container">
-        <h1>#{profile.user.firstName} #{profile.user.lastName}</h1>
-        <c:choose>
-            <c:when test="${profile.user.priv and profile.user.userID eq currentUser.userID}">
-            <h:outputLink id="publicBtn" class="btn btn-dark float-right btn-sm px-3 ml-2" value="javascript:void(0)" onclick="changePrivacy()">#{profile.user.priv ? 'Change to Public' : 'Change to Private'}</h:outputLink>
-        </c:when>
-        <c:otherwise>
-        <h:outputLabel class="float-right px-3 ml-2" value="${profile.user.priv ? 'Private Profile' : 'Public Profile'}"/>
-        </c:otherwise>
-            
-        </c:choose>
-        
-        <h2>#{profile.user.username}</h2>
-        <c:if test="${(currentUser.userID ne profile.user.userID) and profile.user.priv eq false}">
-                <h:outputLink id="publicBtn" class="btn btn-dark float-right btn-sm px-3" value="javascript:void(0)" onclick="changePrivacy()">Follow Person</h:outputLink>
-            </c:if>
-        <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
-        
+        <h:panelGroup layout="block" class="row">
+          <h:panelGroup layout="block" class="col-9">
+            <h1>#{profile.user.firstName} #{profile.user.lastName}</h1>
+            <h2>#{profile.user.username}</h2>
+            <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
+          </h:panelGroup>
+          <h:panelGroup layout="block" class="col-3">
+            <h:panelGroup layout="block" rendered="${profile.user.userID eq currentUser.userID}">
+              <f:view>
+                <h:form>
+                  <h:outputLink id="privacyBtn" class="btn btn-dark btn-sm px-3 ml-2 privacyBtn"
+                    value="javascript:void(0)"
+                    onclick="if(confirm('You sure you want to change the privacy settings?')) changePrivacy();">
+                    ${profile.user.priv ? 'Change to Public' : 'Change to Private'}</h:outputLink>
+                </h:form>
+              </f:view>
+            </h:panelGroup>
+            <h:panelGroup layout="block" rendered="${profile.user.userID ne currentUser.userID}">
+              <h:outputLabel class="px-3 ml-2" value="${profile.user.priv ? 'Private Profile' : 'Public Profile'}" />
+              <h:outputLink id="followBtn" class="btn btn-dark btn-sm px-3 followBtn" value="javascript:void(0)"
+                onclick="changeFollowing();">${profile.isUserFollowed(currentUser.userID)?'Unfollow':'Follow'}
+              </h:outputLink>
+            </h:panelGroup>
+
+          </h:panelGroup>
+        </h:panelGroup>
         <ul class="nav nav-pills nav-fill py-2" id="pills-tab" role="tablist">
           <li class="nav-item">
-            <a class="nav-link active" id="pills-photos-tab" data-toggle="pill" href="#pills-photos"
-              role="tab">Photos</a>
+            <a class="nav-link active" id="pills-photos-tab" data-toggle="pill" href="#pills-photos" role="tab">Photos
+              ${profile.user.profilePhotos.size()}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-followers-tab" data-toggle="pill" href="#pills-followers"
-              role="tab">Followers</a>
+            <a class="nav-link" id="pills-followers-tab" data-toggle="pill" href="#pills-followers" role="tab">Followers
+              ${profile.followers.size()}</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" id="pills-following-tab" data-toggle="pill" href="#pills-following"
-              role="tab">Following</a>
+            <a class="nav-link" id="pills-following-tab" data-toggle="pill" href="#pills-following" role="tab">Following
+              ${profile.following.size()}</a>
           </li>
         </ul>
       </h:panelGroup>
     </h:panelGroup>
-    <h:panelGroup layout="block" class="tab-content" id="pills-tabContent">
+    <h:panelGroup layout="block" class="tab-content container" id="pills-tabContent">
       <h:panelGroup layout="block" class="tab-pane fade show active" id="pills-photos">
         <h:panelGroup layout="block" class="row index">
-            <c:choose>
-                <c:when test="${profile.user.userID eq currentUser.userID or not profile.user.priv}">
-          <c:forEach var="i" items="${profile.user.profilePhotos}">
-            <h:panelGroup layout="block" class="col-md-3 col-sm-6 d-flex justify-content-center">
-              <figure class="figure">
-                <h:graphicImage library="images" name="#{i.photoSrc}" title="img name"
-                  class="indexImage figure-img img-fluid rounded"
-                  alt="A generic square placeholder image with rounded corners in a figure." />
-                <figcaption class="figure-caption">
-                  <h4>#{i.caption}</h4>
-                  <p class="post-location text-right">#{i.location}</p>
-                  <!--<h4><%= coffee.name %></h4>-->
-                  <p>
-                      <h:link class="btn btn-outline-info btn-sm" value="More Info" outcome="post" includeViewParams="true">
-                          <f:param value="#{i.photoID}" name="photoID"/>
-                  </h:link>
-                    <!--<a href="/coffees/<%= coffee._id %>" class="btn btn-primary">More Info</a>-->
-                  </p>
-                </figcaption>
-              </figure>
-            </h:panelGroup>
-            <!--<%});%>-->
-          </c:forEach>
-                </c:when>
-                <c:otherwise>
-                    <h4 class="container text-center">Please follow the person to view the photos, if the user's profile is set to public</h4>
-                </c:otherwise>
-            </c:choose>
+          <c:choose>
+            <c:when test="${profile.user.userID eq currentUser.userID or not profile.user.priv}">
+                <c:forEach var="i" items="${profile.user.profilePhotos}">
+                <ui:include src="postTemplate.xhtml"/>
+              </c:forEach>
+            </c:when>
+            <c:otherwise>
+              <h4 class="container text-center">User's profile is private</h4>
+            </c:otherwise>
+          </c:choose>
         </h:panelGroup>
       </h:panelGroup>
       <h:panelGroup layout="block" class="tab-pane fade container" id="pills-followers">

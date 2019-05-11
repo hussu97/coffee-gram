@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Helpers.DateTimeConvertor;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,10 +43,6 @@ public class Post implements Serializable {
 
     public void addComment() throws IOException{
         try{
-            System.out.println(crs);
-            System.out.println(currentUser.getUserID());
-            System.out.println(requestPhotoId);
-            System.out.println(newComment);
             crs.setCommand("insert into comments (userid,photoid,text) values(?,?,?)");
             crs.setInt(1, currentUser.getUserID());
             crs.setInt(2, requestPhotoId);
@@ -143,16 +140,19 @@ public class Post implements Serializable {
         postPhoto = new Photo();
         postAuthor = new User();
         try{
-            crs.setCommand("select * from photos,users where photos.USERID = users.USERID and photoid=?");
+            crs.setCommand("select * from photos,users,locations where photos.USERID = users.USERID and locations.locationid = photos.locationid and photoid=?");
             crs.setInt(1, requestPhotoId);
             crs.execute();
             while(crs.next()){
                 postPhoto.setPhotoID(crs.getInt("photoID"));
                 postPhoto.setCaption(crs.getString("caption"));
-                postPhoto.setLocation(crs.getString("location"));
+                postPhoto.setLocationID(crs.getInt("locationid"));
+                postPhoto.setLocation(crs.getString("locationname"));
                 postPhoto.setPrice(crs.getDouble("price"));
                 postPhoto.setUserID(crs.getInt("userid"));
                 postPhoto.setPhotoSrc(crs.getString("photosrc"));
+                postPhoto.setTimestamp(crs.getTimestamp("ts"));
+                postPhoto.setDate(DateTimeConvertor.timeStampToDate(postPhoto.getTimestamp()));
                 postAuthor.setUserID(crs.getInt("userid"));
                 postAuthor.setFirstName(crs.getString("firstname"));
                 postAuthor.setLastName(crs.getString("lastName"));
@@ -200,9 +200,12 @@ public class Post implements Serializable {
                 c.setText(crs.getString("text"));
                 c.setUserID(crs.getInt("userID"));
                 c.setUsername(crs.getString("username"));
+                c.setTs(crs.getTimestamp("ts"));
+                c.setDateCreated(DateTimeConvertor.timeStampToDate(c.getTs()));
                 comments.add(c);
             }
             crs.close();
+            comments.sort((obj2,obj1)-> obj1.getTs().compareTo(obj2.getTs()));
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

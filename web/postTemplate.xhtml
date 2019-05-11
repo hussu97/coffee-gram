@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        <h:panelGroup layout="block" class="col-md-3 col-sm-6">
+          <figure class="figure">
+              <h:graphicImage library="images" name="#{i.photoSrc}" title="img name" class="indexImage figure-img img-fluid rounded"
+              alt="A generic square placeholder image with rounded corners in a figure."/>
+            <figcaption class="figure-caption">
+                <h4 class="text-danger">#{i.caption}</h4>
+                <h:panelGroup layout="block" class="row">
+                    <p class="col-6 font-weight-bold">#{i.likeCount} L</p>
+                    <p class="col-6 font-weight-bold">#{i.commentCount} C</p>
+                </h:panelGroup>
+                <small class="text-muted">#{i.location}</small>
+              <p>
+                  <h:link class="btn btn-outline-info btn-sm" value="More Info" outcome="post" includeViewParams="true">
+                      <f:param value="#{i.photoID}" name="photoID"/>
+                  </h:link>
+              </p>
+            </figcaption>
+          </figure>
+        </h:panelGroup>
+</ui:composition>

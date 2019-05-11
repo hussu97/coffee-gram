@@ -27,10 +27,6 @@
             <from-outcome>login</from-outcome>
             <to-view-id>/login.xhtml</to-view-id>
         </navigation-case>
-        <navigation-case>
-            <from-outcome>newsfeed</from-outcome>
-            <to-view-id>/newsfeed.xhtml</to-view-id>
-        </navigation-case>
     </navigation-rule>
         <navigation-rule>
         <from-view-id>/addPost.xhtml</from-view-id>
@@ -48,6 +44,10 @@
         <navigation-case>
             <from-outcome>profile</from-outcome>
             <to-view-id>/profile.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>add-post</from-outcome>
+            <to-view-id>/addPost.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <managed-bean>
@@ -67,4 +67,29 @@
             <value>1234</value>
         </managed-property>
     </managed-bean>
+    <navigation-rule>
+        <from-view-id>/post.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>edit-post</from-outcome>
+            <to-view-id>/editPost.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>newsfeed</from-outcome>
+            <to-view-id>/newsfeed.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/editPost.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>post</from-outcome>
+            <to-view-id>/post.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/profile.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>profile</from-outcome>
+            <to-view-id>/profile.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

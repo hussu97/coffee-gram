@@ -95,22 +95,33 @@ public class Profile implements Serializable{
     private void addUserPhotos(){
         ArrayList<Photo> photos = new ArrayList<>();
         try{
-            System.out.println("aaaaa");
-            crs.setCommand("select * from photos where userID=?");
-            System.out.println("bbbbb");
+            crs.setCommand("select * from photos,locations where photos.locationid=locations.locationid and userID=?");
             crs.setInt(1, user.getUserID());
-            System.out.println("ccccc");
-            System.out.println("addUserPhotos: "+user.getUserID());
             crs.execute();
             while(crs.next()){
                 Photo p = new Photo();
                 p.setPhotoID(crs.getInt("photoID"));
                 p.setCaption(crs.getString("caption"));
-                p.setLocation(crs.getString("location"));
+                p.setLocation(crs.getString("locationname"));
+                p.setLocationID(crs.getInt("locationid"));
                 p.setPrice(crs.getDouble("price"));
                 p.setPhotoSrc(crs.getString("photosrc"));
                 p.setUserID(crs.getInt("userID"));
                 photos.add(p);
+            }
+            for(Photo p:photos){
+                crs.setCommand("select count(*) from likes where photoid=?");
+                crs.setInt(1, p.getPhotoID());
+                crs.execute();
+                while(crs.next())
+                    p.setLikeCount(crs.getInt(1));
+                crs.close();
+                crs.setCommand("select count(*) from comments where photoid=?");
+                crs.setInt(1, p.getPhotoID());
+                crs.execute();
+                while(crs.next())
+                    p.setCommentCount(crs.getInt(1));
+                crs.close();
             }
             crs.close();
         }catch(Exception e){
@@ -121,7 +132,7 @@ public class Profile implements Serializable{
     private void addFollowerList(){
         followers = new ArrayList<>();
         try{
-            crs.setCommand("select * from users where userid in (select followinguserID from users,followings where followerUserID=userID and userID=?)");
+            crs.setCommand("select * from users where userid in (select followeruserID from users,followings where followingUserID=userID and userID=?)");
             crs.setInt(1, user.getUserID());
             crs.execute();
             while(crs.next()){
@@ -141,7 +152,7 @@ public class Profile implements Serializable{
     private void addFollowingList(){
         following = new ArrayList<>();
         try{
-            crs.setCommand("select * from users where userid in (select followeruserID from users,followings where followingUserID=userID and userID=?)");
+            crs.setCommand("select * from users where userid in (select followinguserID from users,followings where followerUserID=userID and userID=?)");
             crs.setInt(1, user.getUserID());
             crs.execute();
             while(crs.next()){
@@ -164,6 +175,16 @@ public class Profile implements Serializable{
         addUserPhotos();
         addFollowerList();
         addFollowingList();
+    }
+    public boolean isUserFollowed(int currentUserId){
+        System.out.println(followers.size());
+        for(User i:followers){
+            System.out.println(i.getUserID());
+            if(i.getUserID()==currentUserId){
+                return true;
+            }
+        }
+        return false;
     }
     public String addUserID(int id){
         return "profile.xhtml"; 

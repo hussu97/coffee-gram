@@ -1,4 +1,4 @@
-package Hash;
+package Helpers;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;

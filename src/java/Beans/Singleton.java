@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import Helpers.DateTimeConvertor;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 
@@ -20,7 +21,6 @@ public class Singleton {
 
     public Singleton() throws Exception
     {
-        
         System.out.println("Singleton constructor called");
         if(instance==null)
             instance=this;

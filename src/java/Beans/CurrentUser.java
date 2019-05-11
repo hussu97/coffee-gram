@@ -6,13 +6,16 @@
 package Beans;
 
 import Beans.Singleton;
-import Hash.PasswordAuthentication;
+import Helpers.DateTimeConvertor;
+import Helpers.PasswordAuthentication;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +24,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import javax.sql.rowset.CachedRowSet;
@@ -39,13 +43,35 @@ public class CurrentUser implements Serializable{
     private String password;
     private int userID;
     private boolean priv;
+    private Timestamp ts;
+    private String dateCreated;
     @ManagedProperty(value="#{photo}")
     private Photo newPost;
     private Photo post;
     private Part newPostPhoto;
     private String newPostExt;
+    private ArrayList<SelectItem> locations;
     private CachedRowSet crs = null;
     private PasswordAuthentication pa;
+
+    public ArrayList<SelectItem> getLocations() {
+        locations = new ArrayList<>();
+        try{
+            crs.setCommand("select * from locations");
+            crs.execute();
+            while(crs.next()){
+                locations.add(new SelectItem(crs.getInt("locationid"),crs.getString("locationname"),""));
+            }
+            locations.sort((obj1,obj2)-> obj1.getLabel().compareTo(obj2.getLabel()));
+        }catch(Exception e){
+            
+        }
+        return locations;
+    }
+
+    public void setLocations(ArrayList<SelectItem> locations) {
+        this.locations = locations;
+    }
 
     public CurrentUser() {
         try{
@@ -59,6 +85,22 @@ public class CurrentUser implements Serializable{
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public Timestamp getTs() {
+        return ts;
+    }
+
+    public void setTs(Timestamp ts) {
+        this.ts = ts;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public Photo getPost() {
@@ -167,6 +209,18 @@ public class CurrentUser implements Serializable{
     public void setPriv(boolean priv) {
         this.priv = priv;
     }
+    public void changeFollowing(int followingID){
+        try{
+            System.out.println("follow");
+            crs.setCommand("insert into followings (followerUserID,followingUserID) values (?,?)");
+            crs.setInt(1, userID);
+            crs.setInt(2, followingID);
+            crs.execute();
+            crs.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
     
     public String createUser(){
         String securePassword = pa.hashPass(password.toCharArray());
@@ -187,11 +241,11 @@ public class CurrentUser implements Serializable{
     }
     public String createPost(){
         try{
-            crs.setCommand("insert into photos (photosrc,caption,price,location,userID) values (?,?,?,?,?)");
+            crs.setCommand("insert into photos (photosrc,caption,price,locationid,userID) values (?,?,?,?,?)");
             crs.setString(1, newPost.getPhotoSrc());
             crs.setString(2, newPost.getCaption());
             crs.setDouble(3, newPost.getPrice());
-            crs.setString(4, newPost.getLocation());
+            crs.setInt(4, newPost.getLocationID());
             crs.setInt(5, userID);
             crs.execute();
             crs.close();
@@ -214,6 +268,8 @@ public class CurrentUser implements Serializable{
                 userID = crs.getInt("userID");
                 lastName = crs.getString("lastName");
                 priv = crs.getBoolean("privacy");
+                ts = crs.getTimestamp("ts");
+                dateCreated = DateTimeConvertor.timeStampToDate(ts);
             }
             if(crs.size()==0)
                 return "login";
@@ -258,9 +314,25 @@ public class CurrentUser implements Serializable{
             crs.setCommand("delete from photos where photoid=?");
             crs.setInt(1, post.getPhotoID());
             crs.execute();
+            crs.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
         return "newsfeed.xhtml";
+    }
+    public String changePrivacy(){
+        try{
+            System.out.println("privhi");
+            crs.setCommand("update users set privacy=? where userid=?");
+            priv = !priv;
+            crs.setBoolean(1, priv);
+            crs.setInt(2, userID);
+            crs.execute();
+            crs.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        return ((HttpServletRequest) ec.getRequest()).getRequestURI()+"?userID="+userID;
     }
 }

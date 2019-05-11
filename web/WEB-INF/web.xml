@@ -17,6 +17,14 @@
         <servlet-name>comment</servlet-name>
         <servlet-class>servlets.comment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>privacy</servlet-name>
+        <servlet-class>servlets.privacy</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>following</servlet-name>
+        <servlet-class>servlets.following</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -28,6 +36,14 @@
     <servlet-mapping>
         <servlet-name>comment</servlet-name>
         <url-pattern>/comment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>privacy</servlet-name>
+        <url-pattern>/privacy</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>following</servlet-name>
+        <url-pattern>/following</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

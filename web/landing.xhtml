@@ -8,7 +8,9 @@
         <link rel="stylesheet" href="resources/stylesheets/landing.css"/>
     </h:head>
     <h:body>
-        <input hidden="" type="text">#{sing.DB}</input>
+        <h:form>
+        <h:inputHidden value="#{sing.DB}"/>
+        </h:form>
         <h:panelGroup layout="block" id="landing-header">
                     <h1>Welcome to CoffeeGram!</h1>
                     <h:form>

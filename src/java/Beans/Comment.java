@@ -5,6 +5,7 @@
  */
 package Beans;
 
+import java.sql.Timestamp;
 import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.context.ExternalContext;
@@ -29,18 +30,25 @@ public class Comment {
     private int photoID;
     private int commentID;
     private String username;
-    public void deleteComment(){
-        try{
-            crs.setCommand("delete from comments where commentid =?");
-            crs.setInt(1, commentID);
-            crs.execute();
-            crs.close();
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI()+"?photoID="+photoID);
-        }catch(Exception e){
-            System.out.println("errorAdComment: "+e.getMessage());
-        }
+    private Timestamp ts;
+    private String dateCreated;
+
+    public Timestamp getTs() {
+        return ts;
     }
+
+    public void setTs(Timestamp ts) {
+        this.ts = ts;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -81,18 +89,7 @@ public class Comment {
     public void setCommentID(int commentID) {
         this.commentID = commentID;
     }
-    CachedRowSet crs;
     public Comment() {
-        try{
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            crs=RowSetProvider.newFactory().createCachedRowSet();
-            System.out.println(Singleton.getInstance().getDB());
-            crs.setUrl(Singleton.getInstance().getDB());
-            crs.setUsername(Singleton.getInstance().getUser());
-            crs.setPassword(Singleton.getInstance().getPassword());
-        } catch(Exception e){
-            System.out.println(e.getMessage());
-        }
     }
     
 }
