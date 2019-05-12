@@ -44,7 +44,7 @@ public class Post implements Serializable {
     public void addComment() throws IOException{
         try{
             crs.setCommand("insert into comments (userid,photoid,text) values(?,?,?)");
-            crs.setInt(1, currentUser.getUserID());
+            crs.setInt(1, currentUser.getUserDetails().getUserID());
             crs.setInt(2, requestPhotoId);
             crs.setString(3, newComment);
             crs.execute();
@@ -176,7 +176,7 @@ public class Post implements Serializable {
             crs.execute();
             while(crs.next()){
                 int userID = crs.getInt("userid");
-                if(userID==currentUser.getUserID()){
+                if(userID==currentUser.getUserDetails().getUserID()){
                     isLikedByCurrentUser = true;
                 }
             }

@@ -23,12 +23,8 @@ and open the template in the editor.
   <script>
     function like() {
       data = {
-        photoid: #{
-          post.requestPhotoId
-        },
-        userid: #{
-          currentUser.userID
-        }
+        photoid: #{post.requestPhotoId},
+        userid: #{currentUser.userDetails.userID}
       }
       var likeText = String($("#likeButton").text().trim());
       if (likeText === "Like") {
@@ -86,7 +82,7 @@ and open the template in the editor.
                     <figcaption class="figure-caption">
                       <h4><a>#{post.postPhoto.caption}</a></h4>
                       <p><em>Submitted by #{post.postAuthor.firstName} #{post.postAuthor.lastName}</em></p>
-                      <c:if test="#{currentUser.userID eq post.postPhoto.userID}">
+                      <c:if test="#{currentUser.userDetails.userID eq post.postPhoto.userID}">
                         <h:outputLink class="btn btn-warning float-right btn-lg px-3 ml-2"
                           value="#{currentUser.editPost(post.postPhoto)}">Edit Coffee details</h:outputLink>
                       </c:if>
@@ -143,7 +139,7 @@ and open the template in the editor.
                         <p id="comment-#{i.commentID}-text">#{i.text}</p>
                       </h:panelGroup>
                       <h:panelGroup layout="block" class="p-3">
-                        <c:if test="#{i.userID eq currentUser.userID}">
+                        <c:if test="#{i.userID eq currentUser.userDetails.userID}">
                           <h:outputLink id="comment-#{i.commentID}-edit-button"
                             class="btn btn-warning float-right btn-sm px-3 ml-2" value="javascript:void(0)"
                             onclick="editComment('#{i.commentID}')">Edit</h:outputLink>

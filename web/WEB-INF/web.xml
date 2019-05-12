@@ -29,6 +29,22 @@
         <servlet-name>deletecomment</servlet-name>
         <servlet-class>servlets.deletecomment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>avgpricechart</servlet-name>
+        <servlet-class>servlets.avgpricechart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>photoperlocchart</servlet-name>
+        <servlet-class>servlets.photoperlocchart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>postsovertimechart</servlet-name>
+        <servlet-class>servlets.postsovertimechart</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>usersovertimechart</servlet-name>
+        <servlet-class>servlets.usersovertimechart</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
@@ -52,6 +68,22 @@
     <servlet-mapping>
         <servlet-name>deletecomment</servlet-name>
         <url-pattern>/deletecomment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>avgpricechart</servlet-name>
+        <url-pattern>/avgpricechart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>photoperlocchart</servlet-name>
+        <url-pattern>/photoperlocchart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>postsovertimechart</servlet-name>
+        <url-pattern>/postsovertimechart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>usersovertimechart</servlet-name>
+        <url-pattern>/usersovertimechart</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -8,6 +8,7 @@ package Beans;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 
 /**

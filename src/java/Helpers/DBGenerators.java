@@ -66,6 +66,20 @@ public class DBGenerators {
                 res.add(u);
             }
         crs.close();
+        for(User u:res){
+            crs.setCommand("select count(*) from followings where followeruserid=?");
+            crs.setInt(1, u.getUserID());
+            crs.execute();
+            while(crs.next())
+                u.setFollowingCount(crs.getInt(1));
+            crs.close();
+            crs.setCommand("select count(*) from followings where followinguserid=?");
+            crs.setInt(1, u.getUserID());
+            crs.execute();
+            while(crs.next())
+                u.setFollowerCount(crs.getInt(1));
+            crs.close();
+        }
         return res;
     }
 }

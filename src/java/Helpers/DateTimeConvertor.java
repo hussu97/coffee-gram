@@ -21,6 +21,13 @@ public class DateTimeConvertor {
         String date = simpleDateFormat.format(time);
         return date;
     }
+    public static String timeStampToDateForChart(Timestamp timestamp, String dateFormat){
+        Date time=new Date(timestamp.getTime());
+        String pattern = dateFormat;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        String date = simpleDateFormat.format(time);
+        return date;
+    }
     public static int diffInDays(Timestamp timestamp){
         return (int)(System.currentTimeMillis()-timestamp.getTime())/(1000*60*60*24);
     }

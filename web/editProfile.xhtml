@@ -26,18 +26,18 @@ and open the template in the editor.
           <h:panelGroup layout="block" class="rows">
             <h:panelGroup layout="block" class="form-group">
               <label>Username</label>
-              <h:inputText class="form-control" value="#{currentUser.username}" a:placeholder="Enter Username"
+              <h:inputText class="form-control" value="#{currentUser.userDetails.username}" a:placeholder="Enter Username"
                 disabled="true" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <label>First Name</label>
-              <h:inputText class="form-control" value="#{currentUser.firstName}" a:placeholder="John" required="true"
+              <h:inputText class="form-control" value="#{currentUser.userDetails.firstName}" a:placeholder="John" required="true"
                 requiredMessage="Please enter valid first name" a:autofocus="true" />
               <h:message for="lastName" style="color:red" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <label>Last Name</label>
-              <h:inputText id="lastName" class="form-control" value="#{currentUser.lastName}" a:placeholder="Doe"
+              <h:inputText id="lastName" class="form-control" value="#{currentUser.userDetails.lastName}" a:placeholder="Doe"
                 required="true" requiredMessage="Please enter valid last name" />
               <h:message for="lastName" style="color:red" />
             </h:panelGroup>

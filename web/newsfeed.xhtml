@@ -28,13 +28,13 @@ and open the template in the editor.
       <ui:include src="/navbar.xhtml" />
       <h:panelGroup layout="block" class="jumbotron">
         <h:panelGroup layout="block" class="container">
-          <h1>Welcome to CoffeeGram <span class="text-muted">#{currentUser.username}</span></h1>
+            <h1>Welcome to CoffeeGram <span class="text-muted">#{currentUser.userDetails.username}</span></h1>
           <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
           <h:outputLink class="btn btn-primary btn-large float-right" value="#{currentUser.addPost()}">Add a new Coffee
           </h:outputLink>
           <h:link class="btn btn-success btn-large float-right mr-2" value="View your profile" outcome="profile"
             includeViewParams="true">
-            <f:param value="#{currentUser.userID}" name="userID" />
+              <f:param value="#{currentUser.userDetails.userID}" name="userID" />
           </h:link>
         </h:panelGroup>
       </h:panelGroup>

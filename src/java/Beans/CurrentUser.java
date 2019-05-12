@@ -37,14 +37,8 @@ import javax.sql.rowset.RowSetProvider;
 @SessionScoped
 @ManagedBean
 public class CurrentUser implements Serializable{
-    private String username;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private int userID;
-    private boolean priv;
-    private Timestamp ts;
-    private String dateCreated;
+    @ManagedProperty(value="#{user}")
+    private User userDetails;
     @ManagedProperty(value="#{photo}")
     private Photo newPost;
     private Photo post;
@@ -63,6 +57,22 @@ public class CurrentUser implements Serializable{
         System.out.println("i am called");
         System.out.println(isLoggedIn);
         this.isLoggedIn = isLoggedIn;
+    }
+
+    public User getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(User userDetails) {
+        this.userDetails = userDetails;
+    }
+
+    public Photo getPost() {
+        return post;
+    }
+
+    public void setPost(Photo post) {
+        this.post = post;
     }
     
 
@@ -97,38 +107,6 @@ public class CurrentUser implements Serializable{
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
-    }
-
-    public Timestamp getTs() {
-        return ts;
-    }
-
-    public void setTs(Timestamp ts) {
-        this.ts = ts;
-    }
-
-    public String getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public Photo getPost() {
-        return post;
-    }
-
-    public void setPost(Photo post) {
-        this.post = post;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     public String getNewPostExt() {
@@ -181,83 +159,30 @@ public class CurrentUser implements Serializable{
     public void setNewPost(Photo newPost) {
         this.newPost = newPost;
     }
-    
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isPriv() {
-        return priv;
-    }
-
-    public void setPriv(boolean priv) {
-        this.priv = priv;
-    }
-    public void changeFollowing(int followingID){
-        try{
-            System.out.println("follow");
-            crs.setCommand("insert into followings (followerUserID,followingUserID) values (?,?)");
-            crs.setInt(1, userID);
-            crs.setInt(2, followingID);
-            crs.execute();
-            crs.close();
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
-    
     public String createUser(){
-        String securePassword = pa.hashPass(password.toCharArray());
+        String securePassword = pa.hashPass(userDetails.getPassword().toCharArray());
         System.out.println(securePassword);
         try{
             crs.setCommand("insert into users (username,firstName,lastName,password,privacy) values (?,?,?,?,?)");
-            crs.setString(1, username);
-            crs.setString(2, firstName);
-            crs.setString(3, lastName);
+            crs.setString(1, userDetails.getUsername());
+            crs.setString(2, userDetails.getFirstName());
+            crs.setString(3, userDetails.getLastName());
             crs.setString(4, securePassword);
             crs.setBoolean(5, true);
             crs.execute();
             crs.close();
+            userDetails.setPassword("");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
         return "login";
     }
-    public String updateUser(){
+    public void updateProfile()throws IOException{
         try{
-            crs.setCommand("Update photos set caption=?,price=?,location=? where photoid=?");
-            crs.setString(1, post.getCaption());
-            crs.setDouble(2, post.getPrice());
-            crs.setString(3, post.getLocation());
-            crs.setInt(4, post.getPhotoID());
+            crs.setCommand("Update users set firstname=?,lastname=? where userid=?");
+            crs.setString(1, userDetails.getFirstName());
+            crs.setString(2, userDetails.getLastName());
+            crs.setInt(3, userDetails.getUserID());
             crs.execute();
             crs.close();
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -265,43 +190,34 @@ public class CurrentUser implements Serializable{
             int i = s.lastIndexOf('/');
             String res =  s.substring(0, i);
             System.out.println(res);
-            ec.redirect(res+"/post.xhtml?photoID="+post.getPhotoID());
+            ec.redirect(res+"/profile.xhtml?userID="+userDetails.getUserID());
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return "newsfeed";
     }
-    public String createPost(){
-        try{
-            crs.setCommand("insert into photos (photosrc,caption,price,locationid,userID) values (?,?,?,?,?)");
-            crs.setString(1, newPost.getPhotoSrc());
-            crs.setString(2, newPost.getCaption());
-            crs.setDouble(3, newPost.getPrice());
-            crs.setInt(4, newPost.getLocationID());
-            crs.setInt(5, userID);
-            crs.execute();
-            crs.close();
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        return "newsfeed";
+    public String clearRegister(){
+        userDetails.setUsername("");
+        userDetails.setFirstName("");
+        userDetails.setLastName("");
+        userDetails.setPassword("");
+        return "register";
     }
     public String login(){
         try{
             crs.setCommand("select * from users where username=?");
-            crs.setString(1, username);
+            crs.setString(1, userDetails.getUsername());
             crs.execute();
             while(crs.next()){
                 String token = crs.getString("password");
-                if(!pa.authenticate(password.toCharArray(),token)){
+                if(!pa.authenticate(userDetails.getPassword().toCharArray(),token)){
                     throw new Exception("Passwords do not match");
                 }
-                firstName = crs.getString("firstName");
-                userID = crs.getInt("userID");
-                lastName = crs.getString("lastName");
-                priv = crs.getBoolean("privacy");
-                ts = crs.getTimestamp("ts");
-                dateCreated = DateTimeConvertor.timeStampToDate(ts);
+                userDetails.setFirstName(crs.getString("firstName"));
+                userDetails.setUserID(crs.getInt("userID"));
+                userDetails.setLastName(crs.getString("lastName"));
+                userDetails.setPriv(crs.getBoolean("privacy"));
+                userDetails.setTs(crs.getTimestamp("ts"));
+                userDetails.setDateCreated(DateTimeConvertor.timeStampToDate(userDetails.getTs()));
             }
             if(crs.size()==0)
                 return "login";
@@ -317,24 +233,10 @@ public class CurrentUser implements Serializable{
         setIsLoggedIn(false);
         return "login.xhtml";
     }
-    public void updateProfile()throws IOException{
-        try{
-            crs.setCommand("Update users set firstname=?,lastname=? where userid=?");
-            crs.setString(1, firstName);
-            crs.setString(2, lastName);
-            crs.setInt(3, userID);
-            crs.execute();
-            crs.close();
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            String s = ((HttpServletRequest) ec.getRequest()).getRequestURI();
-            int i = s.lastIndexOf('/');
-            String res =  s.substring(0, i);
-            System.out.println(res);
-            ec.redirect(res+"/profile.xhtml?userID="+userID);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
+    
+    //=============================================================
+    //                          POSTS
+    //============================================================
     public String addPost(){
         newPost = new Photo();
         newPostPhoto = null;
@@ -345,8 +247,49 @@ public class CurrentUser implements Serializable{
         post = p;
         return "editPost.xhtml";
     }
+    public String createPost(){
+        try{
+            if(newPost.getLocationID()==0){
+                crs.setCommand("insert into locations (locationname) values (?)");
+                crs.setString(1, newPost.getLocation());
+                try{
+                    crs.execute();
+                }catch(Exception e){}
+                crs.setCommand("select * from locations where locationname=?");
+                crs.setString(1, newPost.getLocation());
+                crs.execute();
+                while(crs.next()){
+                    newPost.setLocationID(crs.getInt("locationid"));
+                }    
+            }
+            crs.setCommand("insert into photos (photosrc,caption,price,locationid,userID) values (?,?,?,?,?)");
+            crs.setString(1, newPost.getPhotoSrc());
+            crs.setString(2, newPost.getCaption());
+            crs.setDouble(3, newPost.getPrice());
+            crs.setInt(4, newPost.getLocationID());
+            crs.setInt(5, userDetails.getUserID());
+            crs.execute();
+            crs.close();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return "newsfeed";
+    }
     public void updatePost()throws IOException{
         try{
+            if(newPost.getLocationID()==0){
+                crs.setCommand("insert into locations (locationname) values (?)");
+                crs.setString(1, post.getLocation());
+                try{
+                    crs.execute();
+                }catch(Exception e){}
+                crs.setCommand("select * from locations where locationname=?");
+                crs.setString(1, post.getLocation());
+                crs.execute();
+                while(crs.next()){
+                    post.setLocationID(crs.getInt("locationid"));
+                }    
+            }
             crs.setCommand("Update photos set caption=?,price=?,locationid=? where photoid=?");
             crs.setString(1, post.getCaption());
             crs.setDouble(2, post.getPrice());
@@ -374,20 +317,5 @@ public class CurrentUser implements Serializable{
             System.out.println(e.getMessage());
         }
         return "newsfeed.xhtml";
-    }
-    public String changePrivacy(){
-        try{
-            System.out.println("privhi");
-            crs.setCommand("update users set privacy=? where userid=?");
-            priv = !priv;
-            crs.setBoolean(1, priv);
-            crs.setInt(2, userID);
-            crs.execute();
-            crs.close();
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        return ((HttpServletRequest) ec.getRequest()).getRequestURI()+"?userID="+userID;
     }
 }

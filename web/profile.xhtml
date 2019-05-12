@@ -26,7 +26,7 @@ and open the template in the editor.
     changePrivacy = () => {
       data = {
         userid: #{
-          currentUser.userID
+    currentUser.userDetails.userID
         }
       }
       $.post('privacy', data, (res) => {
@@ -43,7 +43,7 @@ and open the template in the editor.
           profile.user.userID
         },
         followerid: #{
-          currentUser.userID
+          currentUser.userDetails.userID
         }
       }
       var followBtn = $('.followBtn');
@@ -77,7 +77,7 @@ and open the template in the editor.
                 <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
               </h:panelGroup>
               <h:panelGroup layout="block" class="col-3">
-                <h:panelGroup layout="block" rendered="${profile.user.userID eq currentUser.userID}">
+                <h:panelGroup layout="block" rendered="${profile.user.userID eq currentUser.userDetails.userID}">
                   <h:outputLink id="privacyBtn" class="btn btn-dark btn-sm px-3 ml-2 my-2 privacyBtn"
                     value="javascript:void(0)"
                     onclick="if(confirm('You sure you want to change the privacy settings?')) changePrivacy();">
@@ -85,11 +85,11 @@ and open the template in the editor.
                   <h:outputLink class="btn btn-dark btn-sm px-3 ml-2 my-2" value="editProfile.xhtml">Edit profile
                   </h:outputLink>
                 </h:panelGroup>
-                <h:panelGroup layout="block" rendered="${profile.user.userID ne currentUser.userID}">
+                <h:panelGroup layout="block" rendered="${profile.user.userID ne currentUser.userDetails.userID}">
                   <h:outputLabel class="px-3 ml-2"
                     value="${profile.user.priv ? 'Private Profile' : 'Public Profile'}" />
                   <h:outputLink id="followBtn" class="btn btn-dark btn-sm px-3 followBtn" value="javascript:void(0)"
-                    onclick="changeFollowing();">${profile.isUserFollowed(currentUser.userID)?'Unfollow':'Follow'}
+                    onclick="changeFollowing();">${profile.isUserFollowed(currentUser.userDetails.userID)?'Unfollow':'Follow'}
                   </h:outputLink>
                 </h:panelGroup>
               </h:panelGroup>
@@ -117,7 +117,7 @@ and open the template in the editor.
           <h:panelGroup layout="block" class="tab-pane fade show active" id="pills-photos">
             <h:panelGroup layout="block" class="row index">
               <c:choose>
-                <c:when test="${profile.user.userID eq currentUser.userID or not profile.user.priv}">
+                <c:when test="${profile.user.userID eq currentUser.userDetails.userID or not profile.user.priv}">
                   <c:forEach var="i" items="${profile.user.profilePhotos}">
                     <ui:include src="postListTemplate.xhtml" />
                   </c:forEach>

@@ -13,22 +13,22 @@
         
     </h:head>
     <h:body>
-        <h:panelGroup layout="block" class="container">
+        <h:panelGroup layout="block" class="container py-4">
             <h:panelGroup layout="block" class="row align-items-center justify-content-center">
                 <h:panelGroup layout="block" class="card col-4 col-offset-4">
                     <h:panelGroup layout="block" class="card-body">
                     <h:form>
-                        <h:commandLink class="float-right btn btn-outline-primary" value="Sign up" action="register"/>
+                        <h:commandLink class="float-right btn btn-outline-primary" value="Sign up" action="#{currentUser.clearRegister}"/>
                     </h:form>  
                     <h4 class="card-title mb-4 mt-1">Sign in</h4>
                         <h:form>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Your username</label>
-                                <h:inputText  class="form-control" value="#{currentUser.username}" a:placeholder="Username" />
+                                <h:inputText  class="form-control" value="#{currentUser.userDetails.username}" a:placeholder="Username" />
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Your password</label>
-                                <h:inputSecret class="form-control" value="#{currentUser.password}" a:placeholder="******" />
+                                <h:inputSecret class="form-control" value="#{currentUser.userDetails.password}" a:placeholder="******" />
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <h:commandButton type="submit" value="Login" action="#{currentUser.login}" class="btn btn-primary btn-block"/>

@@ -14,7 +14,10 @@
         
     </h:head>
     <h:body>
-        <h:panelGroup layout="block" class="container">
+        <f:metadata>
+            <f:viewAction action="#{currentUser.clearRegister()}" />
+        </f:metadata>
+        <h:panelGroup layout="block" class="container py-4">
             <h:panelGroup layout="block" class="row align-items-center justify-content-center">
                 <h:panelGroup layout="block" class="card col-4 col-offset-4">
                     <h:panelGroup layout="block" class="card-body">
@@ -25,23 +28,23 @@
                         <h:form>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>First Name</label>
-                                <h:inputText value="#{currentUser.firstName}" class="form-control" a:placeholder="John" required="true">                         
+                                <h:inputText value="#{currentUser.userDetails.firstName}" class="form-control" a:placeholder="John" required="true">                         
                                 </h:inputText>
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Last Name</label>
-                                <h:inputText value="#{currentUser.lastName}" class="form-control" a:placeholder="Doe" required="true"/>
+                                <h:inputText value="#{currentUser.userDetails.lastName}" class="form-control" a:placeholder="Doe" required="true"/>
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Your username</label>
-                                <h:inputText id="username" value="#{currentUser.username}" class="form-control" a:placeholder="JohhnyDough" required="true">
+                                <h:inputText id="username" value="#{currentUser.userDetails.username}" class="form-control" a:placeholder="JohhnyDough" required="true">
                                     <f:validator validatorId="com.Validators.UsernameValidator"/>
                                 </h:inputText>
                                 <h:message for="username" style="color:red" />
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Your password</label>
-                                <h:inputSecret value="#{currentUser.password}" class="form-control" a:placeholder="******" />
+                                <h:inputSecret value="#{currentUser.userDetails.password}" class="form-control" a:placeholder="******" />
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="form-group">
                                 <label>Confirm Password</label>

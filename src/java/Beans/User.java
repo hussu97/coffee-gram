@@ -33,9 +33,12 @@ public class User implements Serializable{
     private String firstName;
     private String lastName;
     private String password;
+    private String status;
     private int userID;
     private boolean priv;
     private String dateCreated;
+    private int followerCount;
+    private int followingCount;
     private Timestamp ts;
     private ArrayList<Photo> profilePhotos;
     private CachedRowSet crs = null;
@@ -51,6 +54,30 @@ public class User implements Serializable{
         } catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public int getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(int followingCount) {
+        this.followingCount = followingCount;
     }
 
     public String getDateCreated() {
