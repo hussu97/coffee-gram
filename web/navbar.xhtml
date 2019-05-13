@@ -7,12 +7,15 @@ and open the template in the editor.
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core"
   xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <h:link class="navbar-brand font-weight-light" value="CoffeeGram Home" outcome="newsfeed"/>
+    <h:link class="navbar-brand font-weight-light" value="CoffeeGram" outcome="newsfeed"/>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
       <span class="navbar-toggler-icon"></span>
     </button>
     <h:panelGroup layout="block" class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <h:link class="nav-link" value="Home" outcome="newsfeed"/>
+        </li>
         <li class="nav-item">
             <h:link class="nav-link" value="Site Statistics" outcome="statistics"/>
         </li>

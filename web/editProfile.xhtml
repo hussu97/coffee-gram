@@ -49,7 +49,9 @@ and open the template in the editor.
               <h:commandButton value="Change User Details" action="#{currentUser.updateProfile}"
                 class="btn btn-lg btn-outline-success btn-block" />
             </h:panelGroup>
-            <h:outputLink class="badge badge-primary" value="javascript:history.back()">Back</h:outputLink>
+              <h:link class="badge badge-primary" includeViewParams="true" value="back" outcome="profile">
+                  <f:param value="#{currentUser.userDetails.userID}" name="userID"/>
+                  </h:link>
           </h:panelGroup>
         </h:form>
       </h:panelGroup>

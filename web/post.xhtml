@@ -42,7 +42,7 @@ and open the template in the editor.
                  href="#comments" role="tab">Comments - #{post.comments.size()}</a>
                  <h:link class="list-group-item list-group-item-dark" id="list-settings-list" value="Back to your profile" outcome="profile"
             includeViewParams="true">
-                    <f:param value="#{currentUser.userDetails.userID}" name="userID" />
+              <f:param value="#{currentUser.userDetails.userID}" name="userID" />
                 </h:link>
             </div>
           </h:panelGroup>
