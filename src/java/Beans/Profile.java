@@ -87,6 +87,7 @@ public class Profile implements Serializable{
                 user.setLastName(crs.getString("lastname"));
                 user.setPriv(crs.getBoolean("privacy"));
                 user.setUsername(crs.getString("username"));
+                user.setStatus(crs.getString("status"));
             }
             crs.close();
         }catch(Exception e){

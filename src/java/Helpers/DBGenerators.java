@@ -18,9 +18,7 @@ import javax.sql.rowset.CachedRowSet;
 public class DBGenerators {
     public static ArrayList < Photo > buildPhotoList(CachedRowSet crs) throws SQLException {
         ArrayList <Photo> res = new ArrayList <> ();
-        System.out.println("aaaa");
         while (crs.next()) {
-            System.out.println("bbbb");
             Photo p = new Photo();
             p.setUserID(crs.getInt("userid"));
             p.setPhotoID(crs.getInt("photoID"));

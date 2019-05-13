@@ -1,6 +1,6 @@
 
 
-    function addComment() {
+    addComment=()=> {
       if ($('#add-comment-form').is(":visible")) {
         $('#add-comment-btn').text('Leave a Comment');
         $('#add-comment-form').hide();
@@ -10,7 +10,7 @@
       }
     }
 
-    function editComment(i) {
+    editComment=(i)=> {
       var buttonElement = $('#comment-' + i + '-edit-button');
       var commentClass = 'comment-' + i + '-text';
       var commentElement = $('#comment-' + i + '-text');
@@ -40,9 +40,34 @@
         }
       }
     }
-    function deleteComment(i) {
-        if(confirm('Are you sure you want to do this?')){
-            console.log(i);
+    like = (photoid,userid) => {
+      data = {
+        photoid: photoid,
+        userid: userid
+      }
+      var likeText = String($("#likeButton").text().trim().split('-')[0].trim());
+      var likeNumbers = Number($("#likeButton").text().trim().split('-')[1].trim());
+      console.log(likeText);
+      console.log(likeNumbers);
+      if (likeText === "Like") {
+        data.action = "Unlike";
+        likeNumbers+=1;
+      } else {
+        data.action = "Like";
+        likeNumbers-=1;
+      }
+      $.post('like', data, (res) => {
+        $("#likeButton").text(data.action+" - "+likeNumbers);
+      })
+    }
+    deleteComment = (commentid) =>{
+      if (confirm('Are you sure you want to do this?')) {
+        var data = {
+          commentid: commentid
         }
+        $.post('deletecomment', data, (res) => {
+          location.reload();
+        })
+      }
     }
 

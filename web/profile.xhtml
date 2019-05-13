@@ -13,6 +13,7 @@ and open the template in the editor.
   <title>CoffeeGram</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
   <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -22,42 +23,7 @@ and open the template in the editor.
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
   </script>
-  <script>
-    changePrivacy = () => {
-      data = {
-        userid: #{
-    currentUser.userDetails.userID
-        }
-      }
-      $.post('privacy', data, (res) => {
-        console.log(res);
-        if (res == 'true')
-          $('.privacyBtn').text('Change to Public');
-        else
-          $('.privacyBtn').text('Change to Private');
-      })
-    }
-    changeFollowing = () => {
-      data = {
-        followingid: #{
-          profile.user.userID
-        },
-        followerid: #{
-          currentUser.userDetails.userID
-        }
-      }
-      var followBtn = $('.followBtn');
-      console.log(followBtn.text());
-      if (followBtn.text().trim() === 'Follow') {
-        data.DBaction = 'insert';
-      } else {
-        data.DBaction = 'remove'
-      }
-      $.post('following', data, (res) => {
-        location.reload();
-      })
-    }
-  </script>
+  <script src="resources/js/profile.js"></script>
 </h:head>
 <h:body>
   <f:metadata>
@@ -73,23 +39,22 @@ and open the template in the editor.
             <h:panelGroup layout="block" class="row">
               <h:panelGroup layout="block" class="col-9">
                 <h1>#{profile.user.firstName} #{profile.user.lastName}</h1>
-                <h2>#{profile.user.username}</h2>
-                <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
+                <h3>#{profile.user.username}</h3>
+                <p>#{profile.user.status}</p>
               </h:panelGroup>
-              <h:panelGroup layout="block" class="col-3">
+                <h:panelGroup layout="block" class="col-3" style="word-wrap: break-word;">
                 <h:panelGroup layout="block" rendered="${profile.user.userID eq currentUser.userDetails.userID}">
-                  <h:outputLink id="privacyBtn" class="btn btn-dark btn-sm px-3 ml-2 my-2 privacyBtn"
+                  <h:outputLink id="privacyBtn" style="word-wrap: break-word;" class="btn btn-dark btn-sm px-3 ml-2 my-2 privacyBtn clearfix"
                     value="javascript:void(0)"
-                    onclick="if(confirm('You sure you want to change the privacy settings?')) changePrivacy();">
-                    ${profile.user.priv ? 'Change to Public' : 'Change to Private'}</h:outputLink>
-                  <h:outputLink class="btn btn-dark btn-sm px-3 ml-2 my-2" value="editProfile.xhtml">Edit profile
-                  </h:outputLink>
+                    onclick="if(confirm('You sure you want to change the privacy settings?')) changePrivacy(#{currentUser.userDetails.userID});">
+                    ${profile.user.priv ? 'Change  to Public' : 'Change to Private'}</h:outputLink>
+                    <h:link class="btn btn-dark btn-sm px-3 ml-2 my-2" value="Edit profile" outcome="edit-profile"/>
                 </h:panelGroup>
                 <h:panelGroup layout="block" rendered="${profile.user.userID ne currentUser.userDetails.userID}">
                   <h:outputLabel class="px-3 ml-2"
                     value="${profile.user.priv ? 'Private Profile' : 'Public Profile'}" />
                   <h:outputLink id="followBtn" class="btn btn-dark btn-sm px-3 followBtn" value="javascript:void(0)"
-                    onclick="changeFollowing();">${profile.isUserFollowed(currentUser.userDetails.userID)?'Unfollow':'Follow'}
+                                onclick="changeFollowing(#{profile.user.userID},#{currentUser.userDetails.userID});">${profile.isUserFollowed(currentUser.userDetails.userID)?'Unfollow':'Follow'}
                   </h:outputLink>
                 </h:panelGroup>
               </h:panelGroup>

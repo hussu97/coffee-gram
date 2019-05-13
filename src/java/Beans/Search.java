@@ -8,6 +8,7 @@ package Beans;
 import Helpers.DBGenerators;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class Search implements Serializable{
     private ArrayList<User> userResults;
     private ArrayList<Photo> locationResults;
     private CachedRowSet crs;
-    private Set<String> locationResultsNames;
+    private ArrayList<String> locationResultsNames;
    
     public Search() {
         try{
@@ -43,11 +44,11 @@ public class Search implements Serializable{
         }
     }
 
-    public Set<String> getLocationResultsNames() {
+    public ArrayList<String> getLocationResultsNames() {
         return locationResultsNames;
     }
 
-    public void setLocationResultsNames(Set<String> locationResultsNames) {
+    public void setLocationResultsNames(ArrayList<String> locationResultsNames) {
         this.locationResultsNames = locationResultsNames;
     }
     
@@ -96,8 +97,9 @@ public class Search implements Serializable{
                 for(Photo p:locationResults){
                     locationResultsNamesWithDup.add(p.getLocation());
                 }
-                locationResultsNamesWithDup.sort((obj1,obj2)->obj1.compareTo(obj2));
-                locationResultsNames = new HashSet<String>(locationResultsNamesWithDup);
+                HashSet<String> locationResultsSet = new HashSet<>(locationResultsNamesWithDup);
+                locationResultsNames = new ArrayList<>(locationResultsSet);
+                Collections.sort(locationResultsNames);
             }catch(Exception e){
                 System.out.println(e.getMessage());
             }

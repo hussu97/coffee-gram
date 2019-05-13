@@ -55,16 +55,6 @@ public class Post implements Serializable {
             System.out.println("errorAdComment: "+e.getMessage());
         }
     }
-    public void deleteComment(int commentID){
-        try{
-            crs.setCommand("delete from comments where commentid =?");
-            crs.setInt(1, commentID);
-            crs.execute();
-            crs.close();
-        }catch(Exception e){
-            System.out.println("errorAdComment: "+e.getMessage());
-        }
-    }
     public String getNewComment() {
         return newComment;
     }
@@ -154,6 +144,7 @@ public class Post implements Serializable {
                 postAuthor.setUserID(crs.getInt("userid"));
                 postAuthor.setFirstName(crs.getString("firstname"));
                 postAuthor.setLastName(crs.getString("lastName"));
+                postAuthor.setUsername(crs.getString("username"));
             }
             crs.close();
         }catch(Exception e){
@@ -203,7 +194,7 @@ public class Post implements Serializable {
                 comments.add(c);
             }
             crs.close();
-            comments.sort((obj2,obj1)-> obj1.getTs().compareTo(obj2.getTs()));
+            comments.sort((obj2,obj1)-> obj2.getTs().compareTo(obj1.getTs()));
         }catch(Exception e){
             System.out.println(e.getMessage());
         }

@@ -24,7 +24,7 @@ and open the template in the editor.
       <h:panelGroup layout="block" class="container py-3">
         <h1 id="formTitle">Edit your post</h1>
         <h:form enctype="multipart/form-data">
-          <h:panelGroup layout="block" class="rows">
+          <h:panelGroup layout="block" class="rows col-10 offset-1 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
             <h:panelGroup layout="block" class="form-group">
               <label>Coffee Caption</label>
               <h:inputText class="form-control" value="#{currentUser.post.caption}" a:autofocus="true"
@@ -33,7 +33,9 @@ and open the template in the editor.
             <h:panelGroup layout="block" class="form-group">
               <label>Coffee Price</label>
               <h:inputText class="form-control" value="#{currentUser.post.price}" a:placeholder="Enter Coffee price"
-                required="true" requiredMessage="Please enter valid price" />
+                           required="true" requiredMessage="Please enter valid price">
+                  <f:convertNumber type="currency" currencySymbol="AED "/>
+              </h:inputText>
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <label>Coffee Location <b><i>select from this list</i></b></label>
@@ -45,16 +47,20 @@ and open the template in the editor.
               <h:panelGroup layout="block" class="form-group">
                 <label><b><i>or create a new location if you do not see yours</i></b></label>
               <h:inputText class="form-control" value="#{currentUser.post.location}" a:placeholder="Enter Coffee location"/>
+              <h:message for="editCoffee" style="color: red;"/>
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
-              <h:commandButton value="Change Coffee Details" action="#{currentUser.updatePost}"
+                <h:commandButton id="editCoffee" binding="#{currentUser.editCoffeeButton}" value="Change Coffee Details" action="#{currentUser.updatePost}"
                 class="btn btn-lg btn-outline-success btn-block" />
             </h:panelGroup>
             <h:form>
               <h:commandButton value="Delete" onclick="return confirm('Really want to do that?')"
                 action="#{currentUser.deletePost}" class="btn btn-danger btn-sm float-right px-3 ml-2" />
             </h:form>
-            <h:outputLink class="badge badge-primary" value="javascript:history.back()">Back</h:outputLink>
+              <h:link class="badge badge-primary" value="Back" outcome="post"
+            includeViewParams="true">
+                  <f:param value="#{currentUser.post.photoID}" name="photoID" />
+          </h:link>
           </h:panelGroup>
         </h:form>
       </h:panelGroup>

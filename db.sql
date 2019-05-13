@@ -27,8 +27,7 @@ create table photos(
     locationID int not null,
     userID int NOT NULL,
     ts timestamp DEFAULT CURRENT_TIMESTAMP not null,
-    constraint fk_photos_users foreign key(userID) references users(userID) on DELETE CASCADE,
-    constraint fk_photos_locations foreign key(locationID) references locations(locationID) on DELETE CASCADE
+    constraint fk_photos_users foreign key(userID) references users(userID) on DELETE CASCADE
 );
 create table comments(
     commentID int primary key generated always as identity,

@@ -13,6 +13,7 @@ and open the template in the editor.
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CoffeeGram</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
   <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -27,13 +28,29 @@ and open the template in the editor.
       <h:panelGroup layout="block" class="">
         <h:panelGroup layout="block" class="jumbotron p-4 text-center">
           <c:choose>
-            <c:when test="${search.locationResults.size() eq 0}">
+              <c:when test="${search.searchType eq 'location'}">
+                  <c:choose>
+                      <c:when test="${search.locationResults.size() eq 0}">
               <h1>No results found for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...
               </h1>
+                      </c:when>
+                      <c:otherwise>
+                  <h1>Showing results for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...
+              </h1>
+                      </c:otherwise>
+                  </c:choose>
             </c:when>
             <c:otherwise>
-              <h1>Showing results for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...
+              <c:choose>
+                  <c:when test="${search.userResults.size() eq 0}">
+              <h1>No results found for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...
               </h1>
+                      </c:when>
+                      <c:otherwise>
+                  <h1>Showing results for #{search.searchText} <span class="text-muted">(#{search.searchType})</span>...
+              </h1>
+                      </c:otherwise>
+                  </c:choose>
             </c:otherwise>
           </c:choose>
         </h:panelGroup>

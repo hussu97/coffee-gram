@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -48,14 +50,59 @@ public class CurrentUser implements Serializable{
     private CachedRowSet crs = null;
     private PasswordAuthentication pa;
     private boolean isLoggedIn;
+    
+    private UIComponent loginButton;
+    private UIComponent registerButton;
+    private UIComponent addCoffeeButton;
+    private UIComponent editCoffeeButton;
+    private String confirmPass;
+
+    public UIComponent getRegisterButton() {
+        return registerButton;
+    }
+
+    public void setRegisterButton(UIComponent registerButton) {
+        this.registerButton = registerButton;
+    }
+
+    public String getConfirmPass() {
+        return confirmPass;
+    }
+
+    public void setConfirmPass(String confirmPass) {
+        this.confirmPass = confirmPass;
+    }
+
+    public UIComponent getAddCoffeeButton() {
+        return addCoffeeButton;
+    }
+
+    public void setAddCoffeeButton(UIComponent addCoffeeButton) {
+        this.addCoffeeButton = addCoffeeButton;
+    }
+
+    public UIComponent getEditCoffeeButton() {
+        return editCoffeeButton;
+    }
+
+    public void setEditCoffeeButton(UIComponent editCoffeeButton) {
+        this.editCoffeeButton = editCoffeeButton;
+    }
+    
+
+    public UIComponent getLoginButton() {
+        return loginButton;
+    }
+
+    public void setLoginButton(UIComponent loginButton) {
+        this.loginButton = loginButton;
+    }
 
     public boolean isIsLoggedIn() {
         return isLoggedIn;
     }
 
     public void setIsLoggedIn(boolean isLoggedIn) {
-        System.out.println("i am called");
-        System.out.println(isLoggedIn);
         this.isLoggedIn = isLoggedIn;
     }
 
@@ -159,10 +206,29 @@ public class CurrentUser implements Serializable{
     public void setNewPost(Photo newPost) {
         this.newPost = newPost;
     }
+    //=============================================================
+    //                          USER
+    //============================================================
     public String createUser(){
+        if(!confirmPass.equals(userDetails.getPassword())){
+            FacesMessage message = new FacesMessage("Passwords do not match");
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(registerButton.getClientId(context), message);
+            return null;
+        }
         String securePassword = pa.hashPass(userDetails.getPassword().toCharArray());
         System.out.println(securePassword);
         try{
+            crs.setCommand("select * from users where username=?");
+            crs.setString(1, userDetails.getUsername());
+            crs.execute();
+            while(crs.next()){
+                FacesMessage message = new FacesMessage("Username already exists");
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(registerButton.getClientId(context), message);
+                return null;
+            }
+            crs.close();
             crs.setCommand("insert into users (username,firstName,lastName,password,privacy) values (?,?,?,?,?)");
             crs.setString(1, userDetails.getUsername());
             crs.setString(2, userDetails.getFirstName());
@@ -179,10 +245,11 @@ public class CurrentUser implements Serializable{
     }
     public void updateProfile()throws IOException{
         try{
-            crs.setCommand("Update users set firstname=?,lastname=? where userid=?");
+            crs.setCommand("Update users set firstname=?,lastname=?,status=? where userid=?");
             crs.setString(1, userDetails.getFirstName());
             crs.setString(2, userDetails.getLastName());
-            crs.setInt(3, userDetails.getUserID());
+            crs.setString(3,userDetails.getStatus());
+            crs.setInt(4, userDetails.getUserID());
             crs.execute();
             crs.close();
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -195,11 +262,15 @@ public class CurrentUser implements Serializable{
             System.out.println(e.getMessage());
         }
     }
+    //=============================================================
+    //                          REGISTRATION/AUTHENTICATION
+    //============================================================
     public String clearRegister(){
         userDetails.setUsername("");
         userDetails.setFirstName("");
         userDetails.setLastName("");
         userDetails.setPassword("");
+        confirmPass = "";
         return "register";
     }
     public String login(){
@@ -210,17 +281,25 @@ public class CurrentUser implements Serializable{
             while(crs.next()){
                 String token = crs.getString("password");
                 if(!pa.authenticate(userDetails.getPassword().toCharArray(),token)){
-                    throw new Exception("Passwords do not match");
+                    FacesMessage message = new FacesMessage("Password is incorrect");
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(loginButton.getClientId(context), message);
+                    return null;
                 }
                 userDetails.setFirstName(crs.getString("firstName"));
                 userDetails.setUserID(crs.getInt("userID"));
                 userDetails.setLastName(crs.getString("lastName"));
                 userDetails.setPriv(crs.getBoolean("privacy"));
+                userDetails.setStatus(crs.getString("status"));
                 userDetails.setTs(crs.getTimestamp("ts"));
                 userDetails.setDateCreated(DateTimeConvertor.timeStampToDate(userDetails.getTs()));
             }
-            if(crs.size()==0)
-                return "login";
+            if(crs.size()==0){
+                FacesMessage message = new FacesMessage("Username is incorrect");
+                FacesContext context = FacesContext.getCurrentInstance();
+                context.addMessage(loginButton.getClientId(context), message);
+                return null;
+            }
             crs.close();
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -231,7 +310,7 @@ public class CurrentUser implements Serializable{
     }
     public String logout(){
         setIsLoggedIn(false);
-        return "login.xhtml";
+        return "login";
     }
     
     //=============================================================
@@ -241,15 +320,21 @@ public class CurrentUser implements Serializable{
         newPost = new Photo();
         newPostPhoto = null;
         newPostExt = "";
-        return "addPost.xhtml";
+        return "add-post";
     }
     public String editPost(Photo p){
         post = p;
-        return "editPost.xhtml";
+        return "edit-post";
     }
     public String createPost(){
         try{
             if(newPost.getLocationID()==0){
+                if(newPost.getLocation().isEmpty()){
+                    FacesMessage message = new FacesMessage("Please enter a location");
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(addCoffeeButton.getClientId(context), message);
+                    return null;
+                }
                 crs.setCommand("insert into locations (locationname) values (?)");
                 crs.setString(1, newPost.getLocation());
                 try{
@@ -277,7 +362,14 @@ public class CurrentUser implements Serializable{
     }
     public void updatePost()throws IOException{
         try{
-            if(newPost.getLocationID()==0){
+            if(post.getLocationID()==0){
+                System.out.println("hi");
+                if(post.getLocation().isEmpty()){
+                    FacesMessage message = new FacesMessage("Please enter a location");
+                    FacesContext context = FacesContext.getCurrentInstance();
+                    context.addMessage(editCoffeeButton.getClientId(context), message);
+                    return;
+                }
                 crs.setCommand("insert into locations (locationname) values (?)");
                 crs.setString(1, post.getLocation());
                 try{
@@ -316,6 +408,6 @@ public class CurrentUser implements Serializable{
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-        return "newsfeed.xhtml";
+        return "newsfeed";
     }
 }
