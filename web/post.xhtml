@@ -30,7 +30,7 @@ and open the template in the editor.
         <f:viewAction action="#{post.populate()}" />
       </f:metadata>
       <h:panelGroup layout="block" rendered="${post.postPhoto.caption ne null}" class="container py-3">
-          <h:panelGroup layout="block"  class="row">
+        <h:panelGroup layout="block" class="row">
           <h:panelGroup class="col-md-3">
             <div class="list-group" id="list-tab" role="tablist">
               <p class="lead">Navigate</p>
@@ -39,26 +39,28 @@ and open the template in the editor.
               <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#info"
                 role="tab">More Info</a>
               <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
-                 href="#comments" role="tab">Comments - #{post.comments.size()}</a>
-                 <h:link class="list-group-item list-group-item-dark" id="list-settings-list" value="Back to your profile" outcome="profile"
-            includeViewParams="true">
-              <f:param value="#{currentUser.userDetails.userID}" name="userID" />
-                </h:link>
+                href="#comments" role="tab">Comments - #{post.comments.size()}</a>
+              <h:link class="list-group-item list-group-item-dark" id="list-settings-list" value="Back to your profile"
+                outcome="profile" includeViewParams="true">
+                <f:param value="#{currentUser.userDetails.userID}" name="userID" />
+              </h:link>
             </div>
           </h:panelGroup>
           <h:panelGroup layout="block" class="col-md-9 mx-auto">
             <h:panelGroup layout="block" class="tab-content" id="nav-tabContent">
               <div class="tab-pane fade show active photoTab py-3" id="photo" role="tabpanel">
-                  <h:panelGroup layout="block" style="position: relative; text-align: center;">
+                <h:panelGroup layout="block" style="position: relative; text-align: center;">
                   <figure class="figure" id="show">
-                    <h:graphicImage value="#{post.postPhoto.photoSrc}"
-                      class="indexImage figure-img img-fluid rounded img-responsive"
-                      alt="A generic square placeholder image with rounded corners in a figure." />
+                    <h:graphicImage library="images" name="#{post.postPhoto.photoSrc}"
+                      value="#{post.postPhoto.photoSrc}" class="indexImage figure-img img-fluid rounded img-responsive"
+                      alt="Picture of a coffee" />
                     <figcaption class="figure-caption">
                       <h4><a>#{post.postPhoto.caption}</a></h4>
-                      <p><em>Submitted by #{post.postAuthor.firstName} #{post.postAuthor.lastName} <b>(#{post.postAuthor.username})</b></em></p>
+                      <p><em>Submitted by #{post.postAuthor.firstName} #{post.postAuthor.lastName}
+                          <b>(#{post.postAuthor.username})</b></em></p>
                       <c:if test="#{currentUser.userDetails.userID eq post.postPhoto.userID}">
-                          <h:link class="btn btn-warning float-right btn-lg px-3 ml-2" value="Edit Coffee Details" outcome="#{currentUser.editPost(post.postPhoto)}"/>
+                        <h:link class="btn btn-warning float-right btn-lg px-3 ml-2" value="Edit Coffee Details"
+                          outcome="#{currentUser.editPost(post.postPhoto)}" />
                       </c:if>
                     </figcaption>
                   </figure>
@@ -69,8 +71,8 @@ and open the template in the editor.
                     <h:panelGroup layout="block" class="text-left col-6">
                       <c:if test="#{not post.isLikedByCurrentUser}">
                         <h:outputLink id="likeButton" class="btn btn-primary" value="javascript:void(0)"
-                                      onclick="like(#{post.requestPhotoId},#{currentUser.userDetails.userID})">
-                            Like - #{post.likes}
+                          onclick="like(#{post.requestPhotoId},#{currentUser.userDetails.userID})">
+                          Like - #{post.likes}
                         </h:outputLink>
                       </c:if>
                       <c:if test="#{post.isLikedByCurrentUser}">
@@ -87,7 +89,8 @@ and open the template in the editor.
                   <h:panelGroup style="display: none" layout="block" id="add-comment-form" class="add-comment py-3">
                     <h:form>
                       <h:panelGroup layout="block" class="form-group">
-                          <h:inputTextarea class="form-control" value="#{post.newComment}" required="true" requiredMessage="Please Enter Comment"/>
+                        <h:inputTextarea class="form-control" value="#{post.newComment}" required="true"
+                          requiredMessage="Please Enter Comment" />
                       </h:panelGroup>
                       <h:panelGroup layout="block" class="form-group">
                         <h:commandButton value="Add Comment" action="#{post.addComment}"
@@ -139,8 +142,8 @@ and open the template in the editor.
         </h:panelGroup>
       </h:panelGroup>
       <h:panelGroup rendered="${post.postPhoto.caption eq null}" class="jumbotron py-5" layout="block">
-              <h1 class="text-center">Post does not exist</h1>
-          </h:panelGroup>
+        <h1 class="text-center">Post does not exist</h1>
+      </h:panelGroup>
     </c:when>
     <c:otherwise>
       <ui:include src="403.xhtml" />

@@ -25,48 +25,55 @@ public class photoperlocchart extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-                Class.forName("org.apache.derby.jdbc.ClientDriver");
-                CachedRowSet crs=RowSetProvider.newFactory().createCachedRowSet();
-                System.out.println(Singleton.getInstance().getDB());
-                crs.setUrl(Singleton.getInstance().getDB());
-                crs.setUsername(Singleton.getInstance().getUser());
-                crs.setPassword(Singleton.getInstance().getPassword());
-                crs.setCommand("select count(*),locationname from photos,locations where photos.LOCATIONID=locations.LOCATIONID group by locationname");
-                crs.execute();
-                StringBuilder r = new StringBuilder("[ [\"Location\", \"Posts\"],");
-                while(crs.next()){
-                    r.append("[\""+crs.getString("locationname")+"\","+crs.getDouble(1)+"]");
-                    if(!crs.isLast()){
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
+            System.out.println(Singleton.getInstance().getDB());
+            crs.setUrl(Singleton.getInstance().getDB());
+            crs.setUsername(Singleton.getInstance().getUser());
+            crs.setPassword(Singleton.getInstance().getPassword());
+            crs.setCommand(
+                    "select count(*),locationname from photos,locations where photos.LOCATIONID=locations.LOCATIONID group by locationname");
+            crs.execute();
+            StringBuilder r = new StringBuilder();
+            if (crs.size() == 0) {
+                r.append("[[\"Location\",\"Price\"]]");
+            } else {
+                r.append("[ [\"Location\", \"Posts\"],");
+                while (crs.next()) {
+                    r.append("[\"" + crs.getString("locationname") + "\"," + crs.getDouble(1) + "]");
+                    if (!crs.isLast()) {
                         r.append(",");
                     }
                 }
                 r.append("]");
-                System.out.println(r.toString());
-                crs.close();
-                out.print(r.toString());
-            } catch(Exception e){
-                System.out.println(e.getMessage());
             }
+            System.out.println(r.toString());
+            crs.close();
+            out.print(r.toString());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -77,10 +84,10 @@ public class photoperlocchart extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

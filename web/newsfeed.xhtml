@@ -12,7 +12,8 @@ and open the template in the editor.
 <h:head>
   <title>CoffeeGram</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -29,12 +30,14 @@ and open the template in the editor.
       <ui:include src="navbar.xhtml" />
       <h:panelGroup layout="block" class="jumbotron">
         <h:panelGroup layout="block" class="container">
-            <h1 class="font-weight-light">Welcome to your CoffeeGram newsfeed <span class="text-muted">#{currentUser.userDetails.username}</span></h1>
+          <h1 class="font-weight-light">Welcome to your CoffeeGram newsfeed <span
+              class="text-muted">#{currentUser.userDetails.username}</span></h1>
           <p>The only website that allows you to show affection towards your favourite cup of coffee</p>
-          <h:link class="btn btn-primary btn-large float-right" value="Add a new Coffee" outcome="#{currentUser.addPost()}"/>
+          <h:link class="btn btn-primary btn-large float-right" value="Add a new Coffee"
+            outcome="#{currentUser.addPost()}" />
           <h:link class="btn btn-success btn-large float-right mr-2" value="View your profile" outcome="profile"
             includeViewParams="true">
-              <f:param value="#{currentUser.userDetails.userID}" name="userID" />
+            <f:param value="#{currentUser.userDetails.userID}" name="userID" />
           </h:link>
         </h:panelGroup>
       </h:panelGroup>
@@ -47,7 +50,7 @@ and open the template in the editor.
       </h:panelGroup>
     </c:when>
     <c:otherwise>
-        <ui:include src="403.xhtml"/>
+      <ui:include src="403.xhtml" />
     </c:otherwise>
   </c:choose>
 </h:body>

@@ -5,24 +5,25 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-        <h:panelGroup layout="block" class="col-md-3 col-sm-6">
-            <figure class="figure" style="position: relative; text-align: center;">
-              <h:link outcome="post" includeViewParams="true">
-                      <h:graphicImage value="/#{i.photoSrc}" title="img name" class="indexImage figure-img img-fluid rounded"
-              alt="A generic square placeholder image with rounded corners in a figure."/>
-                      <f:param value="#{i.photoID}" name="photoID"/>
-                  </h:link>
-            <figcaption class="figure-caption">
-                <h4 class="text-danger">#{i.caption}</h4>
-                <h:panelGroup layout="block" class="row">
-                    <p class="col-6 font-weight-bold">#{i.likeCount}&#160;  <i class="fas fa-heart"></i></p>
-                    <p class="col-6 font-weight-bold">#{i.commentCount}&#160;  <i class="far fa-comment"></i></p>
-                </h:panelGroup>
-              <p>
-                  
-              </p>
-            </figcaption>
-          </figure>
+  xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+  <h:panelGroup layout="block" class="col-md-3 col-sm-6">
+    <figure class="figure" style="position: relative; text-align: center;">
+      <h:link outcome="post" includeViewParams="true">
+        <h:graphicImage library="images" name="#{i.photoSrc}" value="#{i.photoSrc}" title="img name"
+          class="indexImage figure-img img-fluid rounded" alt="Picture of a coffee" />
+        <f:param value="#{i.photoID}" name="photoID" />
+      </h:link>
+      <figcaption class="figure-caption">
+        <h4 class="text-danger">#{i.caption}</h4>
+        <h:panelGroup layout="block" class="row">
+          <p class="col-6 font-weight-bold">#{i.likeCount}&#160; <i class="fas fa-heart"></i></p>
+          <p class="col-6 font-weight-bold">#{i.commentCount}&#160; <i class="far fa-comment"></i></p>
         </h:panelGroup>
+        <p>
+
+        </p>
+      </figcaption>
+    </figure>
+  </h:panelGroup>
 </ui:composition>

@@ -6,9 +6,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,18 +21,18 @@ and open the template in the editor.
       var fileName = $(this).val();
       //replace the "Choose a file" label
       console.log(fileName);
-      
-    })
-    $(document).ready(function(){
-    $("input[type=file]").click(function(){
-        $('#urlHelp').text("Image type must be png or jpg");
-    });
 
-    $("input[type=file]").change(function(){
+    })
+    $(document).ready(function () {
+      $("input[type=file]").click(function () {
+        $('#urlHelp').text("Image type must be png or jpg");
+      });
+
+      $("input[type=file]").change(function () {
         var arrayy = $(this).val().split("\\");
-        $('#urlHelp').text(arrayy[arrayy.length-1]);
+        $('#urlHelp').text(arrayy[arrayy.length - 1]);
+      });
     });
-});
   </script>
 </head>
 <h:body>
@@ -42,7 +41,8 @@ and open the template in the editor.
       <h:panelGroup layout="block" class="container py-3">
         <h1 id="formTitle">Create New Coffee</h1>
         <h:form enctype="multipart/form-data">
-          <h:panelGroup layout="block" class="rows col-10 offset-1 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
+          <h:panelGroup layout="block"
+            class="rows col-10 offset-1 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
             <h:panelGroup layout="block" class="form-group">
               <label>Coffee Caption</label>
               <h:inputText class="form-control" id="caption" value="#{currentUser.newPost.caption}" a:autofocus="true"
@@ -51,39 +51,40 @@ and open the template in the editor.
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <label>Coffee Price</label>
-              <h:inputText class="form-control" id="price" value="#{currentUser.newPost.price}" a:placeholder="Enter Coffee price"
-                           required="true" requiredMessage="Please enter valid price" >
-                  <f:convertNumber type="currency" currencySymbol="AED "/>
+              <h:inputText class="form-control" id="price" value="#{currentUser.newPost.price}"
+                a:placeholder="Enter Coffee price" required="true" requiredMessage="Please enter valid price">
+                <f:convertNumber type="currency" currencySymbol="AED " />
               </h:inputText>
               <h:message for="price" style="color:red" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
-                <label>Coffee Location <b><i>select from this list</i></b></label>
+              <label>Coffee Location <b><i>select from this list</i></b></label>
               <h:selectOneMenu class="form-control" value="#{currentUser.newPost.locationID}">
-                  <f:selectItem itemLabel="Please select a location" itemValue="${0}" noSelectionOption="true" />
+                <f:selectItem itemLabel="Please select a location" itemValue="${0}" noSelectionOption="true" />
                 <f:selectItems value="#{currentUser.locations}" />
               </h:selectOneMenu>
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
-                <label><b><i>or create a new location if you do not see yours</i></b></label>
-              <h:inputText class="form-control" value="#{currentUser.newPost.location}" a:placeholder="Enter Coffee location"/>
-              <h:message for="addCoffee" style="color: red;"/>
+              <label><b><i>or create a new location if you do not see yours</i></b></label>
+              <h:inputText class="form-control" value="#{currentUser.newPost.location}"
+                a:placeholder="Enter Coffee location" />
+              <h:message for="addCoffee" style="color: red;" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <label>Image</label>
               <h:panelGroup class="custom-file">
-                <h:inputFile class="custom-file-input" value="#{currentUser.newPostPhoto}" id="image"
-                  required="true" requiredMessage="Please submit an image"/>
+                <h:inputFile class="custom-file-input" value="#{currentUser.newPostPhoto}" id="image" required="true"
+                  requiredMessage="Please submit an image" />
                 <label class="custom-file-label" for="inputGroupImage01">Upload image</label>
                 <h:message for="image" style="color:red" />
               </h:panelGroup>
               <small id="urlHelp" class="form-text text-muted">Image type must be png or jpg</small>
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
-                <h:commandButton id="addCoffee" binding="#{currentUser.addCoffeeButton}" value="Add Coffee" action="#{currentUser.createPost}"
-                class="btn btn-lg btn-outline-success btn-block" />
+              <h:commandButton id="addCoffee" binding="#{currentUser.addCoffeeButton}" value="Add Coffee"
+                action="#{currentUser.createPost}" class="btn btn-lg btn-outline-success btn-block" />
             </h:panelGroup>
-              <h:link class="badge badge-primary" value="Back" outcome="newsfeed"/>
+            <h:link class="badge badge-primary" value="Back" outcome="newsfeed" />
           </h:panelGroup>
         </h:form>
       </h:panelGroup>

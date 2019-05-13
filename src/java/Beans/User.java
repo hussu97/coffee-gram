@@ -28,7 +28,7 @@ import javax.sql.rowset.RowSetProvider;
  */
 @SessionScoped
 @ManagedBean
-public class User implements Serializable{
+public class User implements Serializable {
     private String username;
     private String firstName;
     private String lastName;
@@ -44,14 +44,14 @@ public class User implements Serializable{
     private CachedRowSet crs = null;
 
     public User() {
-        try{
+        try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
-            crs=RowSetProvider.newFactory().createCachedRowSet();
+            crs = RowSetProvider.newFactory().createCachedRowSet();
             System.out.println(Singleton.getInstance().getDB());
             crs.setUrl(Singleton.getInstance().getDB());
             crs.setUsername(Singleton.getInstance().getUser());
             crs.setPassword(Singleton.getInstance().getPassword());
-        } catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
@@ -96,7 +96,6 @@ public class User implements Serializable{
         this.ts = ts;
     }
 
-    
     public int getUserID() {
         return userID;
     }
@@ -105,7 +104,7 @@ public class User implements Serializable{
         this.userID = userID;
     }
 
-    public ArrayList<Photo> getProfilePhotos() {        
+    public ArrayList<Photo> getProfilePhotos() {
         return profilePhotos;
     }
 
@@ -136,6 +135,7 @@ public class User implements Serializable{
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     public String getPassword() {
         return password;
     }

@@ -1,64 +1,74 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Login</title>
-        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"/>
-            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"/>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        
-    </h:head>
-    <h:body>
-        <f:metadata>
-            <f:viewAction action="#{currentUser.clearRegister()}" />
-        </f:metadata>
-        <h:panelGroup layout="block" class="container" style="padding-top: 10vh;">
-            <h:panelGroup layout="block" class="row">
-                <h:panelGroup layout="block" class="card col-10 offset-1 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
-                    <h:panelGroup layout="block" class="card-body">
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" />
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</h:head>
+<h:body>
+    <f:metadata>
+        <f:viewAction action="#{currentUser.clearRegister()}" />
+    </f:metadata>
+    <h:panelGroup layout="block" class="container" style="padding-top: 10vh;">
+        <h:panelGroup layout="block" class="row">
+            <h:panelGroup layout="block"
+                class="card col-10 offset-1 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
+                <h:panelGroup layout="block" class="card-body">
                     <h:form>
-                        <h:commandLink class="float-right btn btn-outline-primary" value="Sign In" action="login"/>
-                    </h:form>  
+                        <h:commandLink class="float-right btn btn-outline-primary" value="Sign In" action="login" />
+                    </h:form>
                     <h4 class="card-title mb-4 mt-1">Sign up</h4>
-                        <h:form>
-                            <h:panelGroup layout="block" class="form-group">
-                                <label>First Name</label>
-                                <h:inputText id="firstName" value="#{currentUser.userDetails.firstName}" class="form-control" a:placeholder="John" required="true" requiredMessage="Please enter first name"/>
-                                <h:message for="firstName" style="color:red;" />
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" class="form-group">
-                                <label>Last Name</label>
-                                <h:inputText id="lastName" value="#{currentUser.userDetails.lastName}" class="form-control" a:placeholder="Doe" required="true" requiredMessage="Please enter last name"/>
-                                <h:message for="lastName" style="color:red;" />
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" class="form-group">
-                                <label>Your username</label>
-                                <h:inputText id="username" value="#{currentUser.userDetails.username}" class="form-control" a:placeholder="JohhnyDough" required="true" requiredMessage="Please enter username"/>
-                                <h:message for="username" style="color:red;" />
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" class="form-group">
-                                <label>Your password</label>
-                                <h:inputSecret id="password" value="#{currentUser.userDetails.password}" class="form-control" a:placeholder="******" required="true" requiredMessage="Please enter password"/>
-                                <h:message for="password" style="color:red;" />
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" class="form-group">
-                                <label>Confirm Password</label>
-                                <h:inputSecret id="confirm" class="form-control" value="#{currentUser.confirmPass}" a:placeholder="******" required="true" requiredMessage="Please re-enter password"/>
-                                <h:message for="confirm" style="color:red;" />
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" class="form-group">
-                                <h:commandButton id="registerbutton" type="submit" value="Sign up" binding="#{currentUser.registerButton}" action="#{currentUser.createUser}" class="btn btn-primary btn-block"/>
-                                <h:message for="registerbutton" style="color:red;" />
-                            </h:panelGroup>                                                          
-                        </h:form>
-                    </h:panelGroup>
+                    <h:form>
+                        <h:panelGroup layout="block" class="form-group">
+                            <label>First Name</label>
+                            <h:inputText id="firstName" value="#{currentUser.userDetails.firstName}"
+                                class="form-control" a:placeholder="John" required="true"
+                                requiredMessage="Please enter first name" />
+                            <h:message for="firstName" style="color:red;" />
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" class="form-group">
+                            <label>Last Name</label>
+                            <h:inputText id="lastName" value="#{currentUser.userDetails.lastName}" class="form-control"
+                                a:placeholder="Doe" required="true" requiredMessage="Please enter last name" />
+                            <h:message for="lastName" style="color:red;" />
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" class="form-group">
+                            <label>Your username</label>
+                            <h:inputText id="username" value="#{currentUser.userDetails.username}" class="form-control"
+                                a:placeholder="JohhnyDough" required="true" requiredMessage="Please enter username" />
+                            <h:message for="username" style="color:red;" />
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" class="form-group">
+                            <label>Your password</label>
+                            <h:inputSecret id="password" value="#{currentUser.userDetails.password}"
+                                class="form-control" a:placeholder="******" required="true"
+                                requiredMessage="Please enter password" />
+                            <h:message for="password" style="color:red;" />
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" class="form-group">
+                            <label>Confirm Password</label>
+                            <h:inputSecret id="confirm" class="form-control" value="#{currentUser.confirmPass}"
+                                a:placeholder="******" required="true" requiredMessage="Please re-enter password" />
+                            <h:message for="confirm" style="color:red;" />
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" class="form-group">
+                            <h:commandButton id="registerbutton" type="submit" value="Sign up"
+                                binding="#{currentUser.registerButton}" action="#{currentUser.createUser}"
+                                class="btn btn-primary btn-block" />
+                            <h:message for="registerbutton" style="color:red;" />
+                        </h:panelGroup>
+                    </h:form>
                 </h:panelGroup>
             </h:panelGroup>
         </h:panelGroup>
-    </h:body> 
+    </h:panelGroup>
+</h:body>
+
 </html>

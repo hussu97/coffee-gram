@@ -6,9 +6,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough" xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -23,35 +22,38 @@ and open the template in the editor.
       <h:panelGroup layout="block" class="container py-3">
         <h1 id="formTitle">Edit your personal details</h1>
         <h:form enctype="multipart/form-data">
-          <h:panelGroup layout="block" class="rows col-10 offset-1 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
+          <h:panelGroup layout="block"
+            class="rows col-10 offset-1 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-sm-10 offset-sm-1">
             <h:panelGroup layout="block" class="form-group">
               <label>Username</label>
-              <h:inputText class="form-control" value="#{currentUser.userDetails.username}" a:placeholder="Enter Username"
-                disabled="true" />
+              <h:inputText class="form-control" value="#{currentUser.userDetails.username}"
+                a:placeholder="Enter Username" disabled="true" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <label>First Name</label>
-              <h:inputText id="firstName" class="form-control" value="#{currentUser.userDetails.firstName}" a:placeholder="John" required="true"
-                requiredMessage="Please enter valid first name" a:autofocus="true" />
+              <h:inputText id="firstName" class="form-control" value="#{currentUser.userDetails.firstName}"
+                a:placeholder="John" required="true" requiredMessage="Please enter valid first name"
+                a:autofocus="true" />
               <h:message for="firstName" style="color:red" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <label>Last Name</label>
-              <h:inputText id="lastName" class="form-control" value="#{currentUser.userDetails.lastName}" a:placeholder="Doe"
-                required="true" requiredMessage="Please enter valid last name" />
+              <h:inputText id="lastName" class="form-control" value="#{currentUser.userDetails.lastName}"
+                a:placeholder="Doe" required="true" requiredMessage="Please enter valid last name" />
               <h:message for="lastName" style="color:red" />
             </h:panelGroup>
-              <h:panelGroup layout="block" class="form-group">
+            <h:panelGroup layout="block" class="form-group">
               <label>Profile Status</label>
-              <h:inputText class="form-control" value="#{currentUser.userDetails.status}" a:placeholder="Say something about yourself"/>
+              <h:inputText class="form-control" value="#{currentUser.userDetails.status}"
+                a:placeholder="Say something about yourself" />
             </h:panelGroup>
             <h:panelGroup layout="block" class="form-group">
               <h:commandButton value="Change User Details" action="#{currentUser.updateProfile}"
                 class="btn btn-lg btn-outline-success btn-block" />
             </h:panelGroup>
-              <h:link class="badge badge-primary" includeViewParams="true" value="back" outcome="profile">
-                  <f:param value="#{currentUser.userDetails.userID}" name="userID"/>
-                  </h:link>
+            <h:link class="badge badge-primary" includeViewParams="true" value="back" outcome="profile">
+              <f:param value="#{currentUser.userDetails.userID}" name="userID" />
+            </h:link>
           </h:panelGroup>
         </h:form>
       </h:panelGroup>

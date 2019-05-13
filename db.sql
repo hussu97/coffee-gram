@@ -52,7 +52,7 @@ create table followings(
     constraint fk_followings_2 foreign key(followingUserID) references users(userID) on DELETE CASCADE,
     PRIMARY key(followerUserID, followingUserID)
 );
-
+/* sample locations - retrived from google places API */
 insert into locations (locationname) values ('Byblos Hospitality Group Al Mina Road - Dubai');
 insert into locations (locationname) values ('Capital Club Dubai Gate Village, Building 3 - Building #3');
 insert into locations (locationname) values ('Pharaoh Cafe & Restaurant Arabian Courtyard Hotel & Spa');
@@ -83,9 +83,13 @@ insert into locations (locationname) values ('Mercure Gold Hotel Al Mina Road Du
 insert into locations (locationname) values ('Conrad Dubai Sheikh Zayed Road - Dubai');
 insert into locations (locationname) values ('Jood Palace Hotel Dubai 36-A Street Off Al Rigga Road, Deira, Near Al Rigga Metro Station');
 insert into locations (locationname) values ('Sandras Inn Hotel Near Baniyas Square Metro Station');
-insert into locations (locationname) values ('Hotel Raffles Dubai Wafi - Sheikh Rashid Road');insert into locations (locationname) values ('Carlton Downtown Hotel Sheikh Zayed Road, Near Financial Centre Metro Station');
+insert into locations (locationname) values ('Hotel Raffles Dubai Wafi - Sheikh Rashid Road');
+insert into locations (locationname) values ('Carlton Downtown Hotel Sheikh Zayed Road, Near Financial Centre Metro Station');
 insert into locations (locationname) values ('The Canvas Hotel Dubai MGallery By Sofitel 23 Kuwait Street - Dubai');
 insert into locations (locationname) values ('Byblos Hospitality Group Al Mina Road - Dubai');
-insert into locations (locationname) values ('Hard Rock Cafe Dubai Festival City Zone 8A, Dubai Festival City Mall Next to Marks & Spencer');insert into locations (locationname) values ('The Oberoi, Dubai The Oberoi Centre - Al Aamal Street - Dubai');
-insert into locations (locationname) values ('Sofitel Dubai Downtown Sheikh Zayed Road - Dubai');insert into locations (locationname) values ('Zuma Restaurant Gate Village 06, Podium Level - Al Saada Street - Dubai');
-insert into locations (locationname) values ('La Maison Al Abraj Street, Business Bay');insert into locations (locationname) values ('Capital Club Dubai Gate Village, Building 3 - Building #3');
+insert into locations (locationname) values ('Hard Rock Cafe Dubai Festival City Zone 8A, Dubai Festival City Mall Next to Marks & Spencer');
+insert into locations (locationname) values ('The Oberoi, Dubai The Oberoi Centre - Al Aamal Street - Dubai');
+insert into locations (locationname) values ('Sofitel Dubai Downtown Sheikh Zayed Road - Dubai');
+insert into locations (locationname) values ('Zuma Restaurant Gate Village 06, Podium Level - Al Saada Street - Dubai');
+insert into locations (locationname) values ('La Maison Al Abraj Street, Business Bay');
+insert into locations (locationname) values ('Capital Club Dubai Gate Village, Building 3 - Building #3');

@@ -179,8 +179,9 @@ public class CurrentUser implements Serializable{
             if(newPostExt.equals(".png")||newPostExt.equals(".jpg")){
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyy-hhmmss.SSS");
                 newPost.setPhotoSrc("IMG_"+sdf.format(new Date())+newPostExt);
-                String destName = "C:\\Users\\hp\\inc-images\\";
-//                String destName = "C:\\Users\\hp\\One Drive\\OneDrive\\Documents\\NetBeansProjects\\coffee-gram-inc\\web\\resources\\images\\";
+                //NOTE - BELOW FILENAME DOES NOT WORK (IT SHOULD)
+//                String destName = "C:\\Users\\hp\\inc-images\\";
+                String destName = "C:\\Users\\hp\\One Drive\\OneDrive\\Documents\\NetBeansProjects\\coffee-gram-inc\\web\\resources\\images\\";
                 Files.copy(in, new File(destName+newPost.getPhotoSrc()).toPath());
             } else{
                 System.out.println(newPostExt);     
