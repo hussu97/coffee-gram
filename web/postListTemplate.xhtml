@@ -10,7 +10,7 @@ and open the template in the editor.
   <h:panelGroup layout="block" class="col-md-3 col-sm-6">
     <figure class="figure" style="position: relative; text-align: center;">
       <h:link outcome="post" includeViewParams="true">
-        <h:graphicImage library="images" name="#{i.photoSrc}" value="#{i.photoSrc}" title="img name"
+        <h:graphicImage value="#{i.photoSrc}" title="img name"
           class="indexImage figure-img img-fluid rounded" alt="Picture of a coffee" />
         <f:param value="#{i.photoID}" name="photoID" />
       </h:link>

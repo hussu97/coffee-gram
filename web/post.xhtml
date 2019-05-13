@@ -51,8 +51,7 @@ and open the template in the editor.
               <div class="tab-pane fade show active photoTab py-3" id="photo" role="tabpanel">
                 <h:panelGroup layout="block" style="position: relative; text-align: center;">
                   <figure class="figure" id="show">
-                    <h:graphicImage library="images" name="#{post.postPhoto.photoSrc}"
-                      value="#{post.postPhoto.photoSrc}" class="indexImage figure-img img-fluid rounded img-responsive"
+                    <h:graphicImage value="#{post.postPhoto.photoSrc}" class="indexImage figure-img img-fluid rounded img-responsive"
                       alt="Picture of a coffee" />
                     <figcaption class="figure-caption">
                       <h4><a>#{post.postPhoto.caption}</a></h4>
