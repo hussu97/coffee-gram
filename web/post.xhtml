@@ -10,7 +10,7 @@ and open the template in the editor.
   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <head>
-  <title>TODO supply a title</title>
+  <title>CoffeeGram</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
   <link rel="stylesheet" type="text/css" href="resources/stylesheets/app.css" />
@@ -29,8 +29,8 @@ and open the template in the editor.
         <f:viewParam name="photoID" value="#{post.requestPhotoId}" />
         <f:viewAction action="#{post.populate()}" />
       </f:metadata>
-      <h:panelGroup layout="block" class="container py-3">
-        <h:panelGroup layout="block" class="row">
+      <h:panelGroup layout="block" rendered="${post.postPhoto.caption ne null}" class="container py-3">
+          <h:panelGroup layout="block"  class="row">
           <h:panelGroup class="col-md-3">
             <div class="list-group" id="list-tab" role="tablist">
               <p class="lead">Navigate</p>
@@ -51,7 +51,7 @@ and open the template in the editor.
               <div class="tab-pane fade show active photoTab py-3" id="photo" role="tabpanel">
                   <h:panelGroup layout="block" style="position: relative; text-align: center;">
                   <figure class="figure" id="show">
-                    <h:graphicImage library="images" name="#{post.postPhoto.photoSrc}"
+                    <h:graphicImage value="#{post.postPhoto.photoSrc}"
                       class="indexImage figure-img img-fluid rounded img-responsive"
                       alt="A generic square placeholder image with rounded corners in a figure." />
                     <figcaption class="figure-caption">
@@ -138,6 +138,9 @@ and open the template in the editor.
           </h:panelGroup>
         </h:panelGroup>
       </h:panelGroup>
+      <h:panelGroup rendered="${post.postPhoto.caption eq null}" class="jumbotron py-5" layout="block">
+              <h1 class="text-center">Post does not exist</h1>
+          </h:panelGroup>
     </c:when>
     <c:otherwise>
       <ui:include src="403.xhtml" />

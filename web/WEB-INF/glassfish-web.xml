@@ -6,8 +6,7 @@
   <jsp-config>
     <property name="keepgenerated" value="true">
       <description>Keep a copy of the generated servlet class' java code.</description>
-    </property>
-    <property name="alternatedocroot_1" value="from=/inc-images/*" dir="/Users/hp"/>
-   
+    </property>   
   </jsp-config>
+  <property name="alternatedocroot_1" value="from=* dir=c:\Users\hp\inc-images"/>
 </glassfish-web-app>

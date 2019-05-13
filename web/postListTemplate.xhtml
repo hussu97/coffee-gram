@@ -9,7 +9,7 @@ and open the template in the editor.
         <h:panelGroup layout="block" class="col-md-3 col-sm-6">
             <figure class="figure" style="position: relative; text-align: center;">
               <h:link outcome="post" includeViewParams="true">
-                      <h:graphicImage library="images" name="#{i.photoSrc}" title="img name" class="indexImage figure-img img-fluid rounded"
+                      <h:graphicImage value="/#{i.photoSrc}" title="img name" class="indexImage figure-img img-fluid rounded"
               alt="A generic square placeholder image with rounded corners in a figure."/>
                       <f:param value="#{i.photoID}" name="photoID"/>
                   </h:link>
