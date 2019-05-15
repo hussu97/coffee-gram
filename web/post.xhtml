@@ -22,14 +22,13 @@ and open the template in the editor.
   <script src="resources/js/post.js"></script>
 </head>
 <h:body>
-  <c:choose>
-    <c:when test="${currentUser.isLoggedIn}">
+      <h:panelGroup rendered="${currentUser.isLoggedIn}">
       <ui:include src="navbar.xhtml" />
       <f:metadata>
         <f:viewParam name="photoID" value="#{post.requestPhotoId}" />
         <f:viewAction action="#{post.populate()}" />
       </f:metadata>
-      <h:panelGroup layout="block" rendered="${post.postPhoto.caption ne null}" class="container py-3">
+      <h:panelGroup layout="block" class="container py-3">
         <h:panelGroup layout="block" class="row">
           <h:panelGroup class="col-md-3">
             <div class="list-group" id="list-tab" role="tablist">
@@ -143,11 +142,10 @@ and open the template in the editor.
       <h:panelGroup rendered="${post.postPhoto.caption eq null}" class="jumbotron py-5" layout="block">
         <h1 class="text-center">Post does not exist</h1>
       </h:panelGroup>
-    </c:when>
-    <c:otherwise>
+      </h:panelGroup>
+      <h:panelGroup rendered="${not currentUser.isLoggedIn}">
       <ui:include src="403.xhtml" />
-    </c:otherwise>
-  </c:choose>
+      </h:panelGroup>
 </h:body>
 
 </html>
