@@ -19,9 +19,10 @@ and open the template in the editor.
         <h5>#{i.followingCount} following</h5>
       </h:panelGroup>
       <h:panelGroup layout="block" class="col-md-2 col-sm-12 align-middle">
-        <h:link class="btn btn-success btn-large " value="View Profile" outcome="profile" includeViewParams="true">
+          <h:outputLabel class="badge badge-info" value="${i.priv? 'Private':'Public'}"/>
+          <p><h:link class="btn btn-success btn-large " value="View Profile" outcome="profile" includeViewParams="true">
           <f:param value="#{i.userID}" name="userID" />
-        </h:link>
+              </h:link></p>
 
       </h:panelGroup>
     </h:panelGroup>
